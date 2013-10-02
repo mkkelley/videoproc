@@ -18,11 +18,11 @@ int main(int, char**) {
     std::cout << inputSize;
     VideoWriter outputVideo;
     //outputVideo.open("output.avi", -1, cap.get(CV_CAP_PROP_FPS), inputSize, true);
-    outputVideo.open("output.avi", CV_FOURCC('I', 'Y', 'U', 'V'), 15, inputSize, true);
+    outputVideo.open("output.avi", CV_FOURCC('X', 'V', 'I', 'D'), 15, inputSize, true);
 
     if (!outputVideo.isOpened()) {
         std::cout << "Problem. Couldn't open video output.";
-        return -1;
+        //return -1;
     }
 
     Mat image;
@@ -34,7 +34,7 @@ int main(int, char**) {
         outputVideo << image;
         n++;
         imshow("Display Image", image);
-        waitKey(0);
+        //waitKey(0);
     }
     return 0;
 }
