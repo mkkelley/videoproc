@@ -16,11 +16,10 @@ double Camera::getFps() {
     int counter = 0;
     time(&start);
     Mat image;
-    while(counter < 120) {
+    while(counter++ < 120) {
         cap >> image;
-        time(&end);
-        ++counter;
     }
+    time(&end);
     sec = difftime(end, start);
     fps = counter / sec;
     return fps;
