@@ -1,12 +1,12 @@
 #include "Camera.h"
 
 
-Camera::Camera() : cap(0) {
+Camera::Camera() : _cap(0), _fps(-1) {
 
 }
 
 double Camera::getFps() {
-    if (!cap.isOpened()) {
+    if (!_cap.isOpened()) {
         return -1;
     }
 
@@ -17,7 +17,7 @@ double Camera::getFps() {
     time(&start);
     Mat image;
     while(counter++ < 120) {
-        cap >> image;
+        _cap >> image;
     }
     time(&end);
     sec = difftime(end, start);
@@ -26,11 +26,11 @@ double Camera::getFps() {
 }
 
 double Camera::getWidth() {
-    return cap.get(CV_CAP_PROP_FRAME_WIDTH);
+    return _cap.get(CV_CAP_PROP_FRAME_WIDTH);
 }
 
 double Camera::getHeight() {
-    return cap.get(CV_CAP_PROP_FRAME_HEIGHT);
+    return _cap.get(CV_CAP_PROP_FRAME_HEIGHT);
 }
 
 cv::Size Camera::getSize() {
@@ -42,7 +42,7 @@ std::vector<Mat> Camera::captureVideo(int frames) {
 
     Mat image;
     for (int x = 0; x < frames; x++) {
-        cap >> image;
+        _cap >> image;
         image.copyTo(out[x]);
     }
 

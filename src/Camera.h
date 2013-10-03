@@ -17,6 +17,6 @@ class Camera {
         Camera();
 
     private:
-        cv::VideoCapture cap;
-        double fps;
+        cv::VideoCapture _cap;
+        double _fps;
 };
