@@ -4,6 +4,7 @@
 #include <memory>
 
 #include "Camera.h"
+#include "Recorder.h"
 
 int main(int, char**) {
     Camera cam;
@@ -13,19 +14,7 @@ int main(int, char**) {
     cv::Size inputSize = cam.getSize();
     std::cout << "Input Resolution: " << inputSize << std::endl;
 
-    cv::VideoWriter outputVideo;
-    outputVideo.open("output.avi", CV_FOURCC('M', 'J', 'P', 'G'), fps, inputSize, true);
-
-    if (!outputVideo.isOpened()) {
-        std::cout << "Problem. Couldn't open video output.";
-        return -1;
-    }
-
-    std::vector<Mat> output = cam.captureVideo(100);
-
-    for (size_t i = 0; i < 100; i++) {
-        outputVideo << output[i];
-    }
-
+    Recorder r(&cam);
+    r.record("output.avi", 100);
     return 0;
 }

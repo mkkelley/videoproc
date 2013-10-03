@@ -13,6 +13,7 @@ class Camera {
         double getHeight();
         cv::Size getSize();
         double getFps();
+        Mat getNextFrame();
         std::vector<Mat> captureVideo(int frames);
         Camera();
 

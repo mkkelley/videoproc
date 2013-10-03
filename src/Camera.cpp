@@ -6,6 +6,9 @@ Camera::Camera() : _cap(0), _fps(-1) {
 }
 
 double Camera::getFps() {
+    if (_fps != -1) {
+        return _fps;
+    }
     if (!_cap.isOpened()) {
         return -1;
     }
@@ -22,6 +25,7 @@ double Camera::getFps() {
     time(&end);
     sec = difftime(end, start);
     fps = counter / sec;
+    _fps = fps;
     return fps;
 }
 
@@ -35,6 +39,14 @@ double Camera::getHeight() {
 
 cv::Size Camera::getSize() {
     return cv::Size(getWidth(), getHeight());
+}
+
+Mat Camera::getNextFrame() {
+    Mat image;
+    Mat image2;
+    _cap >> image;
+    image.copyTo(image2);
+    return image2;
 }
 
 std::vector<Mat> Camera::captureVideo(int frames) {
