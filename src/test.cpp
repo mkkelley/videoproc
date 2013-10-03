@@ -10,8 +10,7 @@ int main(int, char**) {
     double fps = cam.getFps();
     std::cout << "FPS: "  << fps << std::endl;
 
-    cv::Size inputSize = cv::Size(cam.getWidth(),
-                cam.getHeight());
+    cv::Size inputSize = cam.getSize();
     std::cout << "Input Resolution: " << inputSize << std::endl;
 
     cv::VideoWriter outputVideo;
@@ -19,6 +18,7 @@ int main(int, char**) {
 
     if (!outputVideo.isOpened()) {
         std::cout << "Problem. Couldn't open video output.";
+        return -1;
     }
 
     std::vector<Mat> output = cam.captureVideo(100);
