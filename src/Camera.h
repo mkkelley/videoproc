@@ -15,8 +15,9 @@ class Camera {
         Size getSize();
         double getFps();
         Mat getNextFrame();
-        vector<Mat> captureVideo(int frames);
+        virtual vector<Mat> captureVideo(int frames);
         Camera();
+        virtual ~Camera();
 
     private:
         VideoCapture _cap;

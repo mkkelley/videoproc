@@ -5,6 +5,10 @@ Camera::Camera() : _cap(0), _fps(-1) {
 
 }
 
+Camera::~Camera() {
+
+}
+
 double Camera::getFps() {
     if (_fps != -1) {
         return _fps;
