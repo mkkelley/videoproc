@@ -37,8 +37,8 @@ double Camera::getHeight() {
     return _cap.get(CV_CAP_PROP_FRAME_HEIGHT);
 }
 
-cv::Size Camera::getSize() {
-    return cv::Size(getWidth(), getHeight());
+Size Camera::getSize() {
+    return Size(getWidth(), getHeight());
 }
 
 Mat Camera::getNextFrame() {
@@ -49,8 +49,8 @@ Mat Camera::getNextFrame() {
     return image2;
 }
 
-std::vector<Mat> Camera::captureVideo(int frames) {
-    std::vector<Mat> out(frames);
+vector<Mat> Camera::captureVideo(int frames) {
+    vector<Mat> out(frames);
 
     Mat image;
     for (int x = 0; x < frames; x++) {

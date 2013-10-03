@@ -4,18 +4,21 @@
 #include <vector>
 
 using cv::Mat;
+using cv::Size;
+using cv::VideoCapture;
+using std::vector;
 
 class Camera {
     public:
         double getWidth();
         double getHeight();
-        cv::Size getSize();
+        Size getSize();
         double getFps();
         Mat getNextFrame();
-        std::vector<Mat> captureVideo(int frames);
+        vector<Mat> captureVideo(int frames);
         Camera();
 
     private:
-        cv::VideoCapture _cap;
+        VideoCapture _cap;
         double _fps;
 };
