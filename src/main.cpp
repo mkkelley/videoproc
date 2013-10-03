@@ -5,7 +5,7 @@
 #include "Recorder.h"
 
 int main(int, char**) {
-    Camera cam;
+    Camera cam(0);
     double fps = cam.getFps();
     std::cout << "FPS: "  << fps << std::endl;
 

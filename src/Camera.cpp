@@ -1,11 +1,9 @@
 #include "Camera.h"
 
-
-Camera::Camera() : _cap(0), _fps(-1) {
-
+Camera::Camera() : _fps(-1) {
 }
 
-Camera::~Camera() {
+Camera::Camera(int which) : _cap(which), _fps(-1) {
 
 }
 

@@ -15,11 +15,11 @@ class Camera {
         Size getSize();
         double getFps();
         Mat getNextFrame();
-        virtual vector<Mat> captureVideo(int frames);
+        vector<Mat> captureVideo(int frames);
         Camera();
-        virtual ~Camera();
+        Camera(int which);
 
-    private:
+    protected:
         VideoCapture _cap;
         double _fps;
 };
