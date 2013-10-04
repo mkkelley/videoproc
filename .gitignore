@@ -5,3 +5,4 @@ Makefile
 videocap
 output.avi
 *.swp
+test
