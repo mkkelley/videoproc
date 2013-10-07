@@ -10,8 +10,12 @@ using std::endl;
 using std::to_string;
 
 int main(int argc, char **argv) {
-    std::cout << argv[0] << " " << argv[1] << endl;
-
+    if (argc == 1) {
+        cout << "Valid options include:" << endl;
+        cout << argv[0] << " " << "stitch" << endl;
+        cout << argv[0] << " " << "record" << endl;
+        return 1;
+    }
     if (string(argv[1]) == "stitch") {
         VideoStitcher stitch("combine.avi", 24);
         for (int i = 1; i <= 100; i++) {
