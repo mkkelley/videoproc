@@ -23,6 +23,14 @@ int main(int argc, char **argv) {
         showHelp();
         return 1;
     }
+    CornerDetector cd;
+    auto pFunc = [&cd] (Mat& m) {
+        Mat out;
+        auto kps = cd.getKeyPoints(m);
+        cv::drawKeypoints(m, kps, out);
+        return out;
+    };
+
     if (string(argv[1]) == "stitch") {
         VideoStitcher stitch("combine.avi", 24);
         for (int i = 1; i <= 100; i++) {
@@ -39,25 +47,13 @@ int main(int argc, char **argv) {
         cv::Size inputSize = cam.getSize();
         cout << "Input Resolution: " << inputSize << endl;
 
-        CornerDetector cd;
-        cam.setFunction([&cd] (Mat& m) {
-                Mat out;
-                auto kps = cd.getKeyPoints(m);
-                cv::drawKeypoints(m, kps, out);
-                return out;
-                });
+        cam.setFunction(pFunc);
 
         Recorder r(&cam);
         r.record("output.avi", 100);
     } else if (string(argv[1]) == "realtime") {
-        CornerDetector cd;
         Camera cam(0);
-        cam.setFunction([&cd] (Mat& m) {
-                Mat out;
-                auto kps = cd.getKeyPoints(m);
-                cv::drawKeypoints(m, kps, out);
-                return out;
-                });
+        cam.setFunction(pFunc);
         cv::namedWindow("feed", 1);
         while(true) {
             Mat image = cam.getNextFrame();
@@ -70,14 +66,8 @@ int main(int argc, char **argv) {
             return 1;
         }
 
-        CornerDetector cd;
         Video v(argv[2]);
-        v.setFunction([&cd] (Mat& m) {
-                Mat out;
-                auto kps = cd.getKeyPoints(m);
-                cv::drawKeypoints(m, kps, out);
-                return out;
-                });
+        v.setFunction(pFunc);
         cv::namedWindow("feed", 1);
         while(true) {
             Mat image = v.getNextFrame();
