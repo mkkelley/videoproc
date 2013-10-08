@@ -1,6 +1,7 @@
 #include "CornerDetector.h"
 
 CornerDetector::CornerDetector(string type) {
+    if (type == "") type = _defaultType;
     _detector = FeatureDetector::create(type);
 }
 
