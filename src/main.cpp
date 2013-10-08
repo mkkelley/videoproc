@@ -14,6 +14,7 @@ void showHelp() {
     cout << "Valid options include:\n";
     cout << "\tstitch\n";
     cout << "\trecord\n";
+    cout << "\tcorners\n";
 }
 
 int main(int argc, char **argv) {
@@ -44,6 +45,13 @@ int main(int argc, char **argv) {
         Camera cam(0);
         Mat image = cam.getNextFrame();
         vector<KeyPoint> x = cd.getKeyPoints(image);
+        Mat matches;
+        cv::drawKeypoints(image, x, matches);
+
+        cv::namedWindow("matches", 1);
+        imshow("matches", matches);
+        cv::waitKey(0);
+
         cout << x.size() << endl;
     } else {
         showHelp();
