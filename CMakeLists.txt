@@ -10,5 +10,6 @@ add_executable( videocap
     src/Recorder.cpp
     src/Video.cpp
     src/VideoStitcher.cpp
+    src/CornerDetector.cpp
     )
 target_link_libraries( videocap ${OpenCV_LIBS} )

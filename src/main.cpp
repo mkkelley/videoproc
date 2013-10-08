@@ -2,6 +2,7 @@
 #include <opencv2/opencv.hpp>
 
 #include "Camera.h"
+#include "CornerDetector.h"
 #include "Recorder.h"
 #include "VideoStitcher.h"
 
@@ -38,6 +39,12 @@ int main(int argc, char **argv) {
 
         Recorder r(&cam);
         r.record("output.avi", 100);
+    } else if (string(argv[1]) == "corners") {
+        CornerDetector cd;
+        Camera cam(0);
+        Mat image = cam.getNextFrame();
+        vector<KeyPoint> x = cd.getKeyPoints(image);
+        cout << x.size() << endl;
     } else {
         showHelp();
         return 1;
