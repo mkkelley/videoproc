@@ -11,10 +11,10 @@ using std::endl;
 using std::to_string;
 
 void showHelp() {
-    cout << "Valid options include:\n";
-    cout << "\tstitch\n";
-    cout << "\trecord\n";
-    cout << "\tcorners\n";
+    cout << "Valid options include:\n"
+        << "\tstitch\n"
+        << "\trecord\n"
+        << "\tcorners\n";
 }
 
 int main(int argc, char **argv) {
@@ -33,10 +33,10 @@ int main(int argc, char **argv) {
     } else if (string(argv[1]) == "record") {
         Camera cam(0);
         double fps = cam.getFps();
-        std::cout << "FPS: "  << fps << std::endl;
+        cout << "FPS: "  << fps << endl;
 
         cv::Size inputSize = cam.getSize();
-        std::cout << "Input Resolution: " << inputSize << std::endl;
+        cout << "Input Resolution: " << inputSize << endl;
 
         Recorder r(&cam);
         r.record("output.avi", 100);
@@ -59,7 +59,7 @@ int main(int argc, char **argv) {
         cv::drawKeypoints(image, x, matches);
 
         cv::namedWindow("matches", 1);
-        imshow("matches", matches);
+        cv::imshow("matches", matches);
         cv::waitKey(0);
 
         cout << x.size() << endl;
