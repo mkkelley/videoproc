@@ -13,9 +13,11 @@ using std::to_string;
 
 void showHelp() {
     cout << "Valid options include:\n"
-        << "\tstitch\n"
+        << "\tcorners [filename]\n"
+        << "\trealtime\n"
         << "\trecord\n"
-        << "\tcorners\n";
+        << "\tstitch\n"
+        << "\tvideo filename\n";
 }
 
 int main(int argc, char **argv) {
