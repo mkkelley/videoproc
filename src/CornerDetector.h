@@ -15,6 +15,6 @@ class CornerDetector {
         vector<KeyPoint> getKeyPoints(Mat image) const;
         CornerDetector(string type = "");
     private:
-        const std::string _defaultType = "BRISK";
+        const std::string _defaultType = "FAST";
         Ptr<FeatureDetector> _detector;
 };
