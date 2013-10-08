@@ -6,7 +6,7 @@
 
 using std::string;
 
-class Video : protected Camera {
+class Video : public Camera {
     public:
         Video(const string);
 };
