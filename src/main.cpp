@@ -50,10 +50,8 @@ int main(int argc, char **argv) {
         Recorder r(&cam);
         r.record("output.avi", 100);
     } else if (string(argv[1]) == "realtime") {
-        Camera cam(0);
-        //double fps = cam.getFps();
-        //cv::Size inputSize = cam.getSize();
         CornerDetector cd;
+        Camera cam(0);
         cam.setFunction([&cd] (Mat& m) {
                 Mat out;
                 auto kps = cd.getKeyPoints(m);
