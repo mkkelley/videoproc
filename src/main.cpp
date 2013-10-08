@@ -41,9 +41,19 @@ int main(int argc, char **argv) {
         Recorder r(&cam);
         r.record("output.avi", 100);
     } else if (string(argv[1]) == "corners") {
+        Mat image;
+        if (argv[2] == nullptr) {
+            Camera cam(0);
+            image = cam.getNextFrame();
+        } else {
+            image = cv::imread(argv[2]);
+            if (image.data == NULL) {
+                std::cerr << "Unable to read specified file: \""
+                    << argv[2] << "\"\n";
+                return 1;
+            }
+        }
         CornerDetector cd;
-        Camera cam(0);
-        Mat image = cam.getNextFrame();
         vector<KeyPoint> x = cd.getKeyPoints(image);
         Mat matches;
         cv::drawKeypoints(image, x, matches);
