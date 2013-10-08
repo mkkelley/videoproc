@@ -42,7 +42,26 @@ int main(int argc, char **argv) {
         showHelp();
         return 1;
     }
-    CornerDetector cd;
+
+    vector<string> args(argc);
+    for (int i = 1; i < argc; i++) {
+        args[i] = argv[i];
+    }
+    cout <<"three\n";
+
+    string detectorType = "";
+    for (uint8_t i = 0; i < args.size(); i++) {
+        if (args[i].find("--type=") == 0) {
+            detectorType = args[i].substr(7);
+            cout << "one\n";
+            args.erase(args.begin() + i);
+            cout << "two\n";
+            --i;
+        }
+    }
+    CornerDetector cd(detectorType);
+    cout << "got here";
+
     auto pFunc = [&cd] (Mat& m) {
         Mat out;
         auto kps = cd.getKeyPoints(m);
