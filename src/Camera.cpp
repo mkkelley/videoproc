@@ -48,6 +48,9 @@ Mat Camera::getNextFrame() {
     Mat image2;
     _cap >> image;
     image.copyTo(image2);
+    if (_func != nullptr) {
+        image2 = _func(image2);
+    }
     return image2;
 }
 
@@ -61,4 +64,8 @@ vector<Mat> Camera::captureVideo(int frames) {
     }
 
     return out;
+}
+
+void Camera::setFunction(std::function<Mat(Mat&)> func) {
+    _func = func;
 }

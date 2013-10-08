@@ -38,6 +38,14 @@ int main(int argc, char **argv) {
         cv::Size inputSize = cam.getSize();
         cout << "Input Resolution: " << inputSize << endl;
 
+        CornerDetector cd;
+        cam.setFunction([&cd] (Mat& m) {
+                Mat out;
+                auto kps = cd.getKeyPoints(m);
+                cv::drawKeypoints(m, kps, out);
+                return out;
+                });
+
         Recorder r(&cam);
         r.record("output.avi", 100);
     } else if (string(argv[1]) == "corners") {
