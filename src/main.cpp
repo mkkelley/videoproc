@@ -38,6 +38,9 @@ int main(int argc, char **argv) {
 
         Recorder r(&cam);
         r.record("output.avi", 100);
+    } else {
+        showHelp();
+        return 1;
     }
     return 0;
 }
