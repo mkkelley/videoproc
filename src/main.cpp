@@ -5,6 +5,7 @@
 #include "CornerDetector.h"
 #include "Recorder.h"
 #include "VideoStitcher.h"
+#include "Video.h"
 
 using std::cout;
 using std::endl;
@@ -48,6 +49,40 @@ int main(int argc, char **argv) {
 
         Recorder r(&cam);
         r.record("output.avi", 100);
+    } else if (string(argv[1]) == "realtime") {
+        Camera cam(0);
+        //double fps = cam.getFps();
+        //cv::Size inputSize = cam.getSize();
+        CornerDetector cd;
+        cam.setFunction([&cd] (Mat& m) {
+                Mat out;
+                auto kps = cd.getKeyPoints(m);
+                cv::drawKeypoints(m, kps, out);
+                return out;
+                });
+        cv::namedWindow("feed", 1);
+        while(true) {
+            Mat image = cam.getNextFrame();
+            cv::imshow("feed", image);
+            cv::waitKey(1);
+        }
+    } else if (string(argv[1]) == "video") {
+        Video v(argv[2]);
+        //double fps = cam.getFps();
+        //cv::Size inputSize = cam.getSize();
+        CornerDetector cd;
+        v.setFunction([&cd] (Mat& m) {
+                Mat out;
+                auto kps = cd.getKeyPoints(m);
+                cv::drawKeypoints(m, kps, out);
+                return out;
+                });
+        cv::namedWindow("feed", 1);
+        while(true) {
+            Mat image = v.getNextFrame();
+            cv::imshow("feed", image);
+            cv::waitKey(1);
+        }
     } else if (string(argv[1]) == "corners") {
         Mat image;
         if (argv[2] == nullptr) {
