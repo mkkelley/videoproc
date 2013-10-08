@@ -67,10 +67,13 @@ int main(int argc, char **argv) {
             cv::waitKey(1);
         }
     } else if (string(argv[1]) == "video") {
-        Video v(argv[2]);
-        //double fps = cam.getFps();
-        //cv::Size inputSize = cam.getSize();
+        if (argv[2] == NULL) {
+            std::cerr << "Must specify video file.\n";
+            return 1;
+        }
+
         CornerDetector cd;
+        Video v(argv[2]);
         v.setFunction([&cd] (Mat& m) {
                 Mat out;
                 auto kps = cd.getKeyPoints(m);
