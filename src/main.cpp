@@ -13,11 +13,28 @@ using std::to_string;
 
 void showHelp() {
     cout << "Valid options include:\n"
-        << "\tcorners [filename]\n"
+        << "\tcorners [infilename]\n"
         << "\trealtime\n"
         << "\trecord\n"
-        << "\tstitch\n"
+        << "\tstitch [outfilename]\n"
         << "\tvideo filename\n";
+}
+
+int stitch(char* filename) {
+    string out;
+    if (filename != NULL) {
+        out = filename;
+    } else {
+        out = "combine.avi";
+    }
+    VideoStitcher stitch(out, 24);
+    for (int i = 1; i <= 100; i++) {
+        string num = "00";
+        if (i < 10) num += to_string(0);
+        num += to_string(i);
+        stitch.appendImage(num + string(".png"));
+    }
+    return 0;
 }
 
 int main(int argc, char **argv) {
@@ -34,13 +51,7 @@ int main(int argc, char **argv) {
     };
 
     if (string(argv[1]) == "stitch") {
-        VideoStitcher stitch("combine.avi", 24);
-        for (int i = 1; i <= 100; i++) {
-            string num = "00";
-            if (i < 10) num += to_string(0);
-            num += to_string(i);
-            stitch.appendImage(num + string(".png"));
-        }
+        stitch(argv[2]);
     } else if (string(argv[1]) == "record") {
         Camera cam(0);
         double fps = cam.getFps();
