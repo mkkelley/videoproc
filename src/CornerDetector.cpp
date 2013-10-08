@@ -2,7 +2,8 @@
 
 vector<KeyPoint> CornerDetector::getKeyPoints(Mat image) const {
     vector<KeyPoint> keyPoints;
-    auto orb = cv::ORB();
-    orb(image, cv::noArray(), keyPoints, cv::noArray());
+    auto brisk = cv::BRISK();
+    Mat descriptors;
+    brisk(image, cv::noArray(), keyPoints, descriptors);
     return keyPoints;
 }
