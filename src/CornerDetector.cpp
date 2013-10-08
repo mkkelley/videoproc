@@ -1,7 +1,7 @@
 #include "CornerDetector.h"
 
 CornerDetector::CornerDetector(string type) {
-    _detector = FeatureDetector::create(_defaultType);
+    _detector = FeatureDetector::create(type);
 }
 
 vector<KeyPoint> CornerDetector::getKeyPoints(Mat image) const {
