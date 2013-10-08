@@ -54,15 +54,13 @@ int main(int argc, char **argv) {
             }
         }
         CornerDetector cd;
-        vector<KeyPoint> x = cd.getKeyPoints(image);
+        vector<KeyPoint> keyPoints = cd.getKeyPoints(image);
         Mat matches;
-        cv::drawKeypoints(image, x, matches);
+        cv::drawKeypoints(image, keyPoints, matches);
 
         cv::namedWindow("matches", 1);
         cv::imshow("matches", matches);
         cv::waitKey(0);
-
-        cout << x.size() << endl;
     } else {
         showHelp();
         return 1;
