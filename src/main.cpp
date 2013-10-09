@@ -123,7 +123,7 @@ int main(int argc, char **argv) {
             cout << fnum++ << ", ";
             Mat image = cam.getNextFrame();
             cv::imshow("feed", image);
-        } while (cv::waitKey(1) != 1048603);
+        } while (cv::waitKey(1) != 27);
     } else if (string(argv[1]) == "video") {
         if (argv[2] == NULL) {
             std::cerr << "Must specify video file.\n";
