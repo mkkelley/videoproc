@@ -2,6 +2,7 @@
 #include <opencv2/opencv.hpp>
 
 #include "Camera.h"
+#include "CamFilter.h"
 #include "CornerDetector.h"
 #include "FlagParser.h"
 #include "Recorder.h"
@@ -92,18 +93,17 @@ int main(int argc, char **argv) {
         cv::Size inputSize = cam->getSize();
         cout << "Input Resolution: " << inputSize << endl;
 
-        cam->setFunction(pFunc);
+        //cam->setFunction(pFunc);
 
         Recorder r(std::move(cam));
         r.record("output.avi", 100);
     } else if (flags.getArg(1) == "realtime") {
-        Camera cam(0);
-        cam.setFunction(pFunc);
+        std::unique_ptr<Camera> cam(new Camera(0));
+        CamFilter cf(std::move(cam), pFunc);
+
         cv::namedWindow("feed", 1);
-        uint32_t fnum=1;
         do {
-            cout << fnum++ << ", ";
-            Mat image = cam.getNextFrame();
+            Mat image = cf.getNextFrame();
             cv::imshow("feed", image);
         } while (cv::waitKey(1) != 27);
     } else if (flags.getArg(1) == "video") {
@@ -113,7 +113,7 @@ int main(int argc, char **argv) {
         }
 
         Video v(flags.getArg(2));
-        v.setFunction(pFunc);
+        //v.setFunction(pFunc);
         cv::namedWindow("feed", 1);
         int fnum = 1;
         while(true) {
@@ -144,9 +144,14 @@ int main(int argc, char **argv) {
         cv::namedWindow("matches", 1);
         cv::imshow("matches", matches);
         cv::waitKey(0);
+    } else if (flags.getArg(1) == "test") {
+        std::unique_ptr<Camera> cam(new Camera(0));
+        CamFilter(std::move(cam), pFunc);
+
     } else {
         showHelp();
         return 1;
     }
+
     return 0;
 }

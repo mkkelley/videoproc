@@ -46,9 +46,6 @@ Size Camera::getSize() {
 Mat Camera::getNextFrame() {
     Mat image;
     _cap >> image;
-    if (_func != nullptr) {
-        image = _func(image);
-    }
     return image;
 }
 
@@ -62,8 +59,4 @@ vector<Mat> Camera::captureVideo(int frames) {
     }
 
     return out;
-}
-
-void Camera::setFunction(std::function<Mat(Mat&)> func) {
-    _func = func;
 }
