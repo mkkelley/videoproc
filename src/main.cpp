@@ -118,7 +118,9 @@ int main(int argc, char **argv) {
         Camera cam(0);
         cam.setFunction(pFunc);
         cv::namedWindow("feed", 1);
+        uint32_t fnum=1;
         do {
+            cout << fnum++ << ", ";
             Mat image = cam.getNextFrame();
             cv::imshow("feed", image);
         } while (cv::waitKey(1) != 1048603);
