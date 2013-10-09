@@ -13,11 +13,13 @@ FlagParser::FlagParser(int argc, char **argv) : _args(argc) {
         if (_args[i].find("--") != 0) {
             continue;
         }
-        uint8_t eqIndex = _args[i].find("=");
-        auto optionName = _args[i].substr(2, eqIndex - 2);
-        if (eqIndex == -1) {
-            _flags[optionName] = "error";
+        string::size_type eqIndex = _args[i].find("=");
+        if (eqIndex == string::npos) {
+            _flags[_args[i].substr(2)] = "error";
+            _args.erase(_args.begin() + i--);
+            continue;
         }
+        auto optionName = _args[i].substr(2, eqIndex - 2);
         _flags[optionName] = _args[i].substr(eqIndex + 1);
         _args.erase(_args.begin() + i);
         --i;
