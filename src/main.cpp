@@ -67,10 +67,13 @@ int main(int argc, char **argv) {
 
     CornerDetector cd(detectorType);
 
-    auto pFunc = [&cd] (Mat& m) {
+    bool lsrl = flags.isSet("lsrl");
+    auto pFunc = [&cd,lsrl] (Mat& m) {
         Mat out;
         auto kps = cd.getKeyPoints(m);
-        cout << findRegressionSlope(kps) << endl;
+        if (lsrl) {
+            cout << findRegressionSlope(kps) << endl;
+        }
         cv::drawKeypoints(m, kps, out);
         return out;
     };
