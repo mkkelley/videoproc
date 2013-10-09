@@ -1,6 +1,8 @@
 #include "Recorder.h"
 
-Recorder::Recorder(Camera *c) : _cam(c) {
+using std::unique_ptr;
+
+Recorder::Recorder(unique_ptr<Camera> c) : _cam(std::move(c)) {
 }
 
 bool Recorder::record(const std::string file, int frames) {
@@ -15,4 +17,8 @@ bool Recorder::record(const std::string file, int frames) {
     }
 
     return true;
+}
+
+unique_ptr<Camera> Recorder::close() {
+    return std::move(_cam);
 }

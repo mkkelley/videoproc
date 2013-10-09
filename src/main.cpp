@@ -82,16 +82,16 @@ int main(int argc, char **argv) {
             stitch(flags.getArg(2));
         }
     } else if (flags.getArg(1) == "record") {
-        Camera cam(0);
-        double fps = cam.getFps();
+        std::unique_ptr<Camera> cam(new Camera(0));
+        double fps = cam->getFps();
         cout << "FPS: "  << fps << endl;
 
-        cv::Size inputSize = cam.getSize();
+        cv::Size inputSize = cam->getSize();
         cout << "Input Resolution: " << inputSize << endl;
 
-        cam.setFunction(pFunc);
+        cam->setFunction(pFunc);
 
-        Recorder r(&cam);
+        Recorder r(std::move(cam));
         r.record("output.avi", 100);
     } else if (flags.getArg(1) == "realtime") {
         Camera cam(0);
