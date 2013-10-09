@@ -83,11 +83,10 @@ int main(int argc, char **argv) {
         Camera cam(0);
         cam.setFunction(pFunc);
         cv::namedWindow("feed", 1);
-        while(true) {
+        do {
             Mat image = cam.getNextFrame();
             cv::imshow("feed", image);
-            cv::waitKey(1);
-        }
+        } while (cv::waitKey(1) != 1048603);
     } else if (string(argv[1]) == "video") {
         if (argv[2] == NULL) {
             std::cerr << "Must specify video file.\n";
