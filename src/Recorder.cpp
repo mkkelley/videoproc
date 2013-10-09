@@ -2,7 +2,7 @@
 
 using std::unique_ptr;
 
-Recorder::Recorder(unique_ptr<Camera> c) : _cam(std::move(c)) {
+Recorder::Recorder(unique_ptr<Viewer> c) : _cam(std::move(c)) {
 }
 
 bool Recorder::record(const std::string file, int frames) {
@@ -19,6 +19,6 @@ bool Recorder::record(const std::string file, int frames) {
     return true;
 }
 
-unique_ptr<Camera> Recorder::close() {
+unique_ptr<Viewer> Recorder::close() {
     return std::move(_cam);
 }
