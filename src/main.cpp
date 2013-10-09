@@ -37,6 +37,22 @@ int stitch(char* filename) {
     return 0;
 }
 
+double findRegressionSlope(const vector<KeyPoint>& kps) {
+    double almostSum = 0;
+    for (uint32_t i = 0; i < kps.size(); ++i) {
+        double localSum = 0;
+        for (uint32_t j = 0; j < kps.size(); ++j) {
+            if (i == j) continue;
+            if (kps[i].pt.x == kps[j].pt.x) continue;
+            localSum += (kps[i].pt.y - kps[j].pt.y) /
+                (kps[i].pt.x - kps[j].pt.x);
+        }
+        almostSum += (localSum / (kps.size() - 1));
+    }
+    almostSum /= kps.size();
+    return almostSum;
+}
+
 int main(int argc, char **argv) {
     if (argc == 1) {
         showHelp();
@@ -61,6 +77,7 @@ int main(int argc, char **argv) {
     auto pFunc = [&cd] (Mat& m) {
         Mat out;
         auto kps = cd.getKeyPoints(m);
+        cout << findRegressionSlope(kps) << endl;
         cv::drawKeypoints(m, kps, out);
         return out;
     };
@@ -96,7 +113,9 @@ int main(int argc, char **argv) {
         Video v(argv[2]);
         v.setFunction(pFunc);
         cv::namedWindow("feed", 1);
+        int fnum = 1;
         while(true) {
+            cout << fnum++ << ", ";
             Mat image = v.getNextFrame();
             cv::imshow("feed", image);
             cv::waitKey(1);
