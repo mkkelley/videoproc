@@ -10,6 +10,7 @@
 using std::cout;
 using std::endl;
 using std::to_string;
+using std::map;
 
 void showHelp() {
     cout << "Valid options include:\n"
@@ -53,6 +54,24 @@ double findRegressionSlope(const vector<KeyPoint>& kps) {
     return almostSum;
 }
 
+map<string, string> parseFlags(vector<string>& args) {
+    map<string, string> options;
+    for (uint8_t i = 0; i < args.size(); i++) {
+        if (args[i].find("--") != 0) {
+            continue;
+        }
+        uint8_t eqIndex = args[i].find("=");
+        if (eqIndex == -1) {
+            std::cerr << "Invalid option: " << args[i] << endl;
+            exit(1);
+        }
+        options[args[i].substr(2, eqIndex - 2)] = args[i].substr(eqIndex + 1);
+        args.erase(args.begin() + i);
+        --i;
+    }
+    return options;
+}
+
 int main(int argc, char **argv) {
     if (argc == 1) {
         showHelp();
@@ -64,14 +83,13 @@ int main(int argc, char **argv) {
         args[i] = argv[i];
     }
 
+    map<string, string> options = parseFlags(args);
+
     string detectorType = "";
-    for (uint8_t i = 0; i < args.size(); i++) {
-        if (args[i].find("--type=") == 0) {
-            detectorType = args[i].substr(7);
-            args.erase(args.begin() + i);
-            --i;
-        }
+    if (options.find("type") != options.end()) {
+        detectorType = options["type"];
     }
+
     CornerDetector cd(detectorType);
 
     auto pFunc = [&cd] (Mat& m) {
