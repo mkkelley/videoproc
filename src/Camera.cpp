@@ -45,13 +45,11 @@ Size Camera::getSize() {
 
 Mat Camera::getNextFrame() {
     Mat image;
-    Mat image2;
     _cap >> image;
-    image.copyTo(image2);
     if (_func != nullptr) {
-        image2 = _func(image2);
+        image = _func(image);
     }
-    return image2;
+    return image;
 }
 
 vector<Mat> Camera::captureVideo(int frames) {
