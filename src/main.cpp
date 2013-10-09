@@ -3,6 +3,7 @@
 
 #include "Camera.h"
 #include "CornerDetector.h"
+#include "FlagParser.h"
 #include "Recorder.h"
 #include "VideoStitcher.h"
 #include "Video.h"
@@ -14,21 +15,17 @@ using std::map;
 
 void showHelp() {
     cout << "Valid options include:\n"
-        << "\tcorners [infilename]\n"
-        << "\trealtime\n"
         << "\trecord\n"
         << "\tstitch [outfilename]\n"
-        << "\tvideo filename\n";
+        << "\tcorners [infilename]\n\n"
+        << "\trealtime\n"
+        << "\tvideo filename\n"
+        << "\n"
+        << "\t[--type=ALGO] to set the keypoint extraction technique\n";
 }
 
-int stitch(char* filename) {
-    string out;
-    if (filename != NULL) {
-        out = filename;
-    } else {
-        out = "combine.avi";
-    }
-    VideoStitcher stitch(out, 24);
+int stitch(string filename) {
+    VideoStitcher stitch(filename, 24);
     for (int i = 1; i <= 100; i++) {
         string num = "00";
         if (i < 10) num += to_string(0);
@@ -54,40 +51,17 @@ double findRegressionSlope(const vector<KeyPoint>& kps) {
     return almostSum;
 }
 
-map<string, string> parseFlags(vector<string>& args) {
-    map<string, string> options;
-    for (uint8_t i = 0; i < args.size(); i++) {
-        if (args[i].find("--") != 0) {
-            continue;
-        }
-        uint8_t eqIndex = args[i].find("=");
-        if (eqIndex == -1) {
-            std::cerr << "Invalid option: " << args[i] << endl;
-            exit(1);
-        }
-        options[args[i].substr(2, eqIndex - 2)] = args[i].substr(eqIndex + 1);
-        args.erase(args.begin() + i);
-        --i;
-    }
-    return options;
-}
-
 int main(int argc, char **argv) {
     if (argc == 1) {
         showHelp();
         return 1;
     }
 
-    vector<string> args(argc);
-    for (int i = 1; i < argc; i++) {
-        args[i] = argv[i];
-    }
-
-    map<string, string> options = parseFlags(args);
+    FlagParser flags(argc, argv);
 
     string detectorType = "";
-    if (options.find("type") != options.end()) {
-        detectorType = options["type"];
+    if (flags.isSet("type")) {
+        detectorType = flags.getOption("type");
     }
 
     CornerDetector cd(detectorType);
@@ -100,9 +74,13 @@ int main(int argc, char **argv) {
         return out;
     };
 
-    if (string(argv[1]) == "stitch") {
-        stitch(argv[2]);
-    } else if (string(argv[1]) == "record") {
+    if (flags.getArg(1) == "stitch") {
+        if (flags.getNumArgs() < 3) {
+            stitch("combine.avi");
+        } else {
+            stitch(flags.getArg(2));
+        }
+    } else if (flags.getArg(1) == "record") {
         Camera cam(0);
         double fps = cam.getFps();
         cout << "FPS: "  << fps << endl;
@@ -114,7 +92,7 @@ int main(int argc, char **argv) {
 
         Recorder r(&cam);
         r.record("output.avi", 100);
-    } else if (string(argv[1]) == "realtime") {
+    } else if (flags.getArg(1) == "realtime") {
         Camera cam(0);
         cam.setFunction(pFunc);
         cv::namedWindow("feed", 1);
@@ -124,13 +102,13 @@ int main(int argc, char **argv) {
             Mat image = cam.getNextFrame();
             cv::imshow("feed", image);
         } while (cv::waitKey(1) != 27);
-    } else if (string(argv[1]) == "video") {
-        if (argv[2] == NULL) {
+    } else if (flags.getArg(1) == "video") {
+        if (flags.getNumArgs() < 3) {
             std::cerr << "Must specify video file.\n";
             return 1;
         }
 
-        Video v(argv[2]);
+        Video v(flags.getArg(2));
         v.setFunction(pFunc);
         cv::namedWindow("feed", 1);
         int fnum = 1;
@@ -140,16 +118,17 @@ int main(int argc, char **argv) {
             cv::imshow("feed", image);
             cv::waitKey(1);
         }
-    } else if (string(argv[1]) == "corners") {
+    } else if (flags.getArg(1) == "corners") {
         Mat image;
-        if (argv[2] == nullptr) {
+        if (flags.getNumArgs() < 3) {
             Camera cam(0);
             image = cam.getNextFrame();
         } else {
-            image = cv::imread(argv[2]);
+            string filename = flags.getArg(2);
+            image = cv::imread(flags.getArg(2));
             if (image.data == NULL) {
                 std::cerr << "Unable to read specified file: \""
-                    << argv[2] << "\"\n";
+                    << filename << "\"\n";
                 return 1;
             }
         }

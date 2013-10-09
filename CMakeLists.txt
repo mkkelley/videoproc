@@ -11,5 +11,6 @@ add_executable( videocap
     src/Video.cpp
     src/VideoStitcher.cpp
     src/CornerDetector.cpp
+    src/FlagParser.cpp
     )
 target_link_libraries( videocap ${OpenCV_LIBS} )
