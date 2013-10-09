@@ -112,15 +112,15 @@ int main(int argc, char **argv) {
             return 1;
         }
 
-        Video v(flags.getArg(2));
-        //v.setFunction(pFunc);
+        std::unique_ptr<Video> v(new Video(flags.getArg(2)));
+        CamFilter cf(std::move(v), pFunc);
+
         cv::namedWindow("feed", 1);
-        int fnum = 1;
-        while(true) {
-            cout << fnum++ << ", ";
-            Mat image = v.getNextFrame();
+        Mat image = cf.getNextFrame();
+        while(!image.empty()) {
             cv::imshow("feed", image);
             cv::waitKey(1);
+            image = cf.getNextFrame();
         }
     } else if (flags.getArg(1) == "corners") {
         Mat image;

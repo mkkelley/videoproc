@@ -32,7 +32,7 @@ double CamFilter::getFps() {
 
 Mat CamFilter::getNextFrame() {
     Mat image = _cam->getNextFrame();
-    return _filter(image);
+    return (!image.empty()) ? _filter(image) : image;
 }
 
 vector<Mat> CamFilter::captureVideo(int frames) {
