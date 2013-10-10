@@ -1,6 +1,9 @@
 #include "VideoStitcher.h"
 
+using std::string;
 using cv::imread;
+using cv::Mat;
+using cv::Size;
 
 VideoStitcher::VideoStitcher(
         string outputFile,

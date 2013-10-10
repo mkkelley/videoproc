@@ -15,6 +15,7 @@ using std::map;
 using std::to_string;
 using std::vector;
 using cv::KeyPoint;
+using cv::Mat;
 
 void showHelp() {
     cout << "Valid options include:\n"
