@@ -56,6 +56,22 @@ double findRegressionSlope(const vector<KeyPoint>& kps) {
     return almostSum;
 }
 
+double findAverageX(const vector<KeyPoint>& kps) {
+    double sum = 0;
+    for (uint32_t i = 0; i < kps.size(); ++i) {
+        sum += kps[i].pt.x;
+    }
+    return sum / kps.size();
+}
+
+double findAverageY(const vector<KeyPoint>& kps) {
+    double sum = 0;
+    for (uint32_t i = 0; i < kps.size(); ++i) {
+        sum += kps[i].pt.y;
+    }
+    return sum / kps.size();
+}
+
 int main(int argc, char **argv) {
     if (argc == 1) {
         showHelp();
@@ -72,11 +88,22 @@ int main(int argc, char **argv) {
     CornerDetector cd(detectorType);
 
     bool lsrl = flags.isSet("lsrl");
-    auto pFunc = [&cd,lsrl] (Mat& m) {
+    bool avgx = flags.isSet("avgx");
+    bool avgy = flags.isSet("avgy");
+    auto pFunc = [&cd,lsrl,avgx,avgy] (Mat& m) {
         Mat out;
         auto kps = cd.getKeyPoints(m);
         if (lsrl) {
-            cout << findRegressionSlope(kps) << endl;
+            cout << findRegressionSlope(kps);
+        }
+        if (avgx) {
+            cout << ", " << findAverageX(kps);
+        }
+        if (avgy) {
+            cout << ", " << findAverageY(kps);
+        }
+        if (lsrl || avgx || avgy) {
+            cout << endl;
         }
         cv::drawKeypoints(m, kps, out);
         return out;
