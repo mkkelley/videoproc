@@ -1,7 +1,8 @@
 #include "CamFilter.h"
 
-using std::unique_ptr;
 using std::function;
+using std::unique_ptr;
+using std::vector;
 using cv::Size;
 using cv::Mat;
 

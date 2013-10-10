@@ -11,8 +11,10 @@
 
 using std::cout;
 using std::endl;
-using std::to_string;
 using std::map;
+using std::to_string;
+using std::vector;
+using cv::KeyPoint;
 
 void showHelp() {
     cout << "Valid options include:\n"

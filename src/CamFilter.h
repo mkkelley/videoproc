@@ -8,7 +8,7 @@ class CamFilter : public Viewer {
     public:
         CamFilter(
                 std::unique_ptr<Viewer>,
-                std::function<Mat(Mat&)>
+                std::function<cv::Mat(cv::Mat&)>
                 );
         double getWidth();
         double getHeight();
@@ -20,5 +20,5 @@ class CamFilter : public Viewer {
 
     private:
         std::unique_ptr<Viewer> _cam;
-        std::function<Mat(Mat&)> _filter;
+        std::function<cv::Mat(cv::Mat&)> _filter;
 };

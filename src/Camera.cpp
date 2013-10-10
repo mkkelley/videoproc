@@ -1,9 +1,17 @@
 #include "Camera.h"
 
+using std::vector;
+using cv::Mat;
+using cv::Size;
+
 Camera::Camera() : _fps(-1) {
 }
 
 Camera::Camera(int which) : _cap(which), _fps(-1) {
+
+}
+
+Camera::~Camera() {
 
 }
 
