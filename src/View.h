@@ -3,7 +3,7 @@
 #include <opencv2/opencv.hpp>
 #include <vector>
 
-class Viewer {
+class View {
     public:
         virtual double getWidth() = 0;
         virtual double getHeight() = 0;
@@ -11,5 +11,5 @@ class Viewer {
         virtual double getFps() = 0;
         virtual cv::Mat getNextFrame() = 0;
         virtual std::vector<cv::Mat> captureVideo(int frames) = 0;
-        virtual ~Viewer() {};
+        virtual ~View() {};
 };

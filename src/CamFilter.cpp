@@ -7,7 +7,7 @@ using cv::Size;
 using cv::Mat;
 
 CamFilter::CamFilter(
-        unique_ptr<Viewer> cam,
+        unique_ptr<View> cam,
         function<Mat(Mat&)> filter) :
     _cam(std::move(cam)),
     _filter(filter)

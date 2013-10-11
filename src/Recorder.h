@@ -7,10 +7,10 @@
 
 class Recorder {
     public:
-        Recorder(std::unique_ptr<Viewer>);
+        Recorder(std::unique_ptr<View>);
         bool record(const std::string file, int frames);
-        std::unique_ptr<Viewer> close();
+        std::unique_ptr<View> close();
     private:
-        std::unique_ptr<Viewer> _cam;
+        std::unique_ptr<View> _cam;
         const int _codec = CV_FOURCC('M', 'J', 'P', 'G');
 };

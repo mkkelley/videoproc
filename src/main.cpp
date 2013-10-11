@@ -12,6 +12,7 @@
 using std::cout;
 using std::endl;
 using std::map;
+using std::string;
 using std::to_string;
 using std::vector;
 using cv::KeyPoint;
@@ -150,6 +151,19 @@ int main(int argc, char **argv) {
         while(!image.empty()) {
             cv::imshow("feed", image);
             cv::waitKey(1);
+            image = cf.getNextFrame();
+        }
+    } else if (flags.getArg(1) == "analyze") {
+        if (flags.getNumArgs() < 3) {
+            std::cerr << "Must specify video file.\n";
+            return 1;
+        }
+
+        std::unique_ptr<Video> v(new Video(flags.getArg(2)));
+        CamFilter cf(std::move(v), pFunc);
+
+        Mat image = cf.getNextFrame();
+        while(!image.empty()) {
             image = cf.getNextFrame();
         }
     } else if (flags.getArg(1) == "corners") {

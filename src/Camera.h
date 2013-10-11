@@ -3,9 +3,9 @@
 #include <opencv2/opencv.hpp>
 #include <vector>
 
-#include "Viewer.h"
+#include "View.h"
 
-class Camera : public Viewer {
+class Camera : public View {
     public:
         double getWidth();
         double getHeight();

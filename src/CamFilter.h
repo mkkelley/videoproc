@@ -3,11 +3,12 @@
 #include <memory>
 
 #include "Camera.h"
+#include "View.h"
 
-class CamFilter : public Viewer {
+class CamFilter : public View {
     public:
         CamFilter(
-                std::unique_ptr<Viewer>,
+                std::unique_ptr<View>,
                 std::function<cv::Mat(cv::Mat&)>
                 );
         double getWidth();
@@ -19,6 +20,6 @@ class CamFilter : public Viewer {
         ~CamFilter() {}
 
     private:
-        std::unique_ptr<Viewer> _cam;
+        std::unique_ptr<View> _cam;
         std::function<cv::Mat(cv::Mat&)> _filter;
 };
