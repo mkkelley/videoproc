@@ -74,6 +74,32 @@ double findAverageY(const vector<KeyPoint>& kps) {
     return sum / kps.size();
 }
 
+double findStdDevX(const vector<KeyPoint>& kps) {
+    double sum = std::accumulate(begin(kps), end(kps), 0.0,
+            [] (const double x, const KeyPoint& y) {
+            return x + y.pt.x;
+            });
+    double m = sum / kps.size();
+    double acc = 0.0;
+    std::for_each(begin(kps), end(kps), [&](const KeyPoint& k) {
+            acc += (k.pt.x - m) * (k.pt.x - m);
+            });
+    return sqrt(acc/kps.size());
+}
+
+double findStdDevY(const vector<KeyPoint>& kps) {
+    double sum = std::accumulate(begin(kps), end(kps), 0.0,
+            [] (const double x, const KeyPoint& y) {
+            return x + y.pt.y;
+            });
+    double m = sum / kps.size();
+    double acc = 0.0;
+    std::for_each(begin(kps), end(kps), [&](const KeyPoint& k) {
+            acc += (k.pt.y - m) * (k.pt.y - m);
+            });
+    return sqrt(acc/kps.size());
+}
+
 int main(int argc, char **argv) {
     if (argc == 1) {
         showHelp();
@@ -94,7 +120,9 @@ int main(int argc, char **argv) {
     {
         flagFn("lsrl", findRegressionSlope),
         flagFn("avgx", findAverageX),
+        flagFn("stdx", findStdDevX),
         flagFn("avgy", findAverageY),
+        flagFn("stdy", findStdDevY),
     };
     auto pFunc = [&] (Mat& m) {
         Mat out;
