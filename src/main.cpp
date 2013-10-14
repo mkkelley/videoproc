@@ -100,6 +100,29 @@ double findStdDevY(const vector<KeyPoint>& kps) {
     return sqrt(acc/kps.size());
 }
 
+double findR(const vector<KeyPoint>& kps) {
+    double sumX = 0;
+    double sumY = 0;
+    double sumX2 = 0;
+    double sumY2 = 0;
+    double sumXY = 0;
+    for (uint32_t i = 0; i < kps.size(); ++i) {
+        sumX += kps[i].pt.x;
+        sumX2 += kps[i].pt.x * kps[i].pt.x;
+        sumY += kps[i].pt.y;
+        sumY2 += kps[i].pt.y * kps[i].pt.y;
+        sumXY += kps[i].pt.x * kps[i].pt.y;
+    }
+    double num = kps.size() * sumXY - sumX * sumY;
+    double denom = sqrt((kps.size()*sumX2 - sumX * sumX)*
+            (kps.size()*sumY2 - sumY * sumY));
+    return -num / denom;
+}
+
+double findLSRLSlope(const vector<KeyPoint>& kps) {
+    return findR(kps) * findStdDevY(kps) / findStdDevX(kps);
+}
+
 int main(int argc, char **argv) {
     if (argc == 1) {
         showHelp();
@@ -123,6 +146,8 @@ int main(int argc, char **argv) {
         flagFn("stdx", findStdDevX),
         flagFn("avgy", findAverageY),
         flagFn("stdy", findStdDevY),
+        flagFn("r", findR),
+        flagFn("slope", findLSRLSlope),
     };
     auto pFunc = [&] (Mat& m) {
         Mat out;
