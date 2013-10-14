@@ -42,7 +42,7 @@ int stitch(string filename) {
     return 0;
 }
 
-double findRegressionSlope(const vector<KeyPoint>& kps) {
+double findAverageSlope(const vector<KeyPoint>& kps) {
     double almostSum = 0;
     for (uint32_t i = 0; i < kps.size(); ++i) {
         double localSum = 0;
@@ -141,13 +141,13 @@ int main(int argc, char **argv) {
     typedef pair<string, std::function<double(const vector<KeyPoint>&)>> flagFn;
     flagFn flagfns[] =
     {
-        flagFn("lsrl", findRegressionSlope),
+        flagFn("slope", findAverageSlope),
         flagFn("avgx", findAverageX),
         flagFn("stdx", findStdDevX),
         flagFn("avgy", findAverageY),
         flagFn("stdy", findStdDevY),
         flagFn("r", findR),
-        flagFn("slope", findLSRLSlope),
+        flagFn("lsrl", findLSRLSlope),
     };
     auto pFunc = [&] (Mat& m) {
         Mat out;
