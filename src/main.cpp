@@ -12,6 +12,7 @@
 using std::cout;
 using std::endl;
 using std::map;
+using std::pair;
 using std::string;
 using std::to_string;
 using std::vector;
@@ -88,22 +89,27 @@ int main(int argc, char **argv) {
 
     CornerDetector cd(detectorType);
 
-    bool lsrl = flags.isSet("lsrl");
-    bool avgx = flags.isSet("avgx");
-    bool avgy = flags.isSet("avgy");
-    auto pFunc = [&cd,lsrl,avgx,avgy] (Mat& m) {
+    typedef pair<string, std::function<double(const vector<KeyPoint>&)>> flagFn;
+    flagFn flagfns[] =
+    {
+        flagFn("lsrl", findRegressionSlope),
+        flagFn("avgx", findAverageX),
+        flagFn("avgy", findAverageY),
+    };
+    auto pFunc = [&] (Mat& m) {
         Mat out;
         auto kps = cd.getKeyPoints(m);
-        if (lsrl) {
-            cout << findRegressionSlope(kps);
+        bool first = true;
+        for (uint32_t i = 0; i < sizeof(flagfns)/sizeof(flagfns[0]); ++i) {
+            if (flags.isSet(flagfns[i].first)) {
+                if (!first) {
+                    cout << ", ";
+                }
+                cout << flagfns[i].second(kps);
+                first = false;
+            }
         }
-        if (avgx) {
-            cout << ", " << findAverageX(kps);
-        }
-        if (avgy) {
-            cout << ", " << findAverageY(kps);
-        }
-        if (lsrl || avgx || avgy) {
+        if (!first) {
             cout << endl;
         }
         cv::drawKeypoints(m, kps, out);
