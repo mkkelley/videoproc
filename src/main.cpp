@@ -175,28 +175,6 @@ int main(int argc, char **argv) {
         while(!image.empty()) {
             image = cf.getNextFrame();
         }
-    } else if (flags.getArg(1) == "corners") {
-        Mat image;
-        if (flags.getNumArgs() < 3) {
-            Camera cam(0);
-            image = cam.getNextFrame();
-        } else {
-            string filename = flags.getArg(2);
-            image = cv::imread(flags.getArg(2));
-            if (image.data == NULL) {
-                std::cerr << "Unable to read specified file: \""
-                    << filename << "\"\n";
-                return 1;
-            }
-        }
-        CornerDetector cd;
-        vector<KeyPoint> keyPoints = cd.getKeyPoints(image);
-        Mat matches;
-        cv::drawKeypoints(image, keyPoints, matches);
-
-        cv::namedWindow("matches", 1);
-        cv::imshow("matches", matches);
-        cv::waitKey(0);
     } else if (flags.getArg(1) == "test") {
         std::unique_ptr<Camera> cam(new Camera(0));
         CamFilter(std::move(cam), pFunc);
