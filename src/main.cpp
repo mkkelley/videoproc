@@ -5,6 +5,7 @@
 #include "CamFilter.h"
 #include "CornerDetector.h"
 #include "FlagParser.h"
+#include "Frame.h"
 #include "Recorder.h"
 #include "VideoStitcher.h"
 #include "Video.h"
@@ -18,6 +19,34 @@ using std::to_string;
 using std::vector;
 using cv::KeyPoint;
 using cv::Mat;
+
+double findAverageSlope(const Frame& f) {
+    return f.getAverageSlope();
+}
+
+double findAverageX(const Frame& f) {
+    return f.getAverageX();
+}
+
+double findStdDevX(const Frame& f) {
+    return f.getStdDevX();
+}
+
+double findAverageY(const Frame& f) {
+    return f.getAverageY();
+}
+
+double findStdDevY(const Frame& f) {
+    return f.getStdDevY();
+}
+
+double findR(const Frame& f) {
+    return f.getR();
+}
+
+double findLSRLSlope(const Frame& f) {
+    return f.getLSRLSlope();
+}
 
 void showHelp() {
     cout << "Valid options include:\n"
@@ -42,86 +71,6 @@ int stitch(string filename) {
     return 0;
 }
 
-double findAverageSlope(const vector<KeyPoint>& kps) {
-    double almostSum = 0;
-    for (uint32_t i = 0; i < kps.size(); ++i) {
-        double localSum = 0;
-        for (uint32_t j = 0; j < kps.size(); ++j) {
-            if (i == j) continue;
-            if (kps[i].pt.x == kps[j].pt.x) continue;
-            localSum += (kps[i].pt.y - kps[j].pt.y) /
-                (kps[i].pt.x - kps[j].pt.x);
-        }
-        almostSum += (localSum / (kps.size() - 1));
-    }
-    almostSum /= kps.size();
-    return almostSum;
-}
-
-double findAverageX(const vector<KeyPoint>& kps) {
-    double sum = 0;
-    for (uint32_t i = 0; i < kps.size(); ++i) {
-        sum += kps[i].pt.x;
-    }
-    return sum / kps.size();
-}
-
-double findAverageY(const vector<KeyPoint>& kps) {
-    double sum = 0;
-    for (uint32_t i = 0; i < kps.size(); ++i) {
-        sum += kps[i].pt.y;
-    }
-    return sum / kps.size();
-}
-
-double findStdDevX(const vector<KeyPoint>& kps) {
-    double sum = std::accumulate(begin(kps), end(kps), 0.0,
-            [] (const double x, const KeyPoint& y) {
-            return x + y.pt.x;
-            });
-    double m = sum / kps.size();
-    double acc = 0.0;
-    std::for_each(begin(kps), end(kps), [&](const KeyPoint& k) {
-            acc += (k.pt.x - m) * (k.pt.x - m);
-            });
-    return sqrt(acc/kps.size());
-}
-
-double findStdDevY(const vector<KeyPoint>& kps) {
-    double sum = std::accumulate(begin(kps), end(kps), 0.0,
-            [] (const double x, const KeyPoint& y) {
-            return x + y.pt.y;
-            });
-    double m = sum / kps.size();
-    double acc = 0.0;
-    std::for_each(begin(kps), end(kps), [&](const KeyPoint& k) {
-            acc += (k.pt.y - m) * (k.pt.y - m);
-            });
-    return sqrt(acc/kps.size());
-}
-
-double findR(const vector<KeyPoint>& kps) {
-    double sumX = 0;
-    double sumY = 0;
-    double sumX2 = 0;
-    double sumY2 = 0;
-    double sumXY = 0;
-    for (uint32_t i = 0; i < kps.size(); ++i) {
-        sumX += kps[i].pt.x;
-        sumX2 += kps[i].pt.x * kps[i].pt.x;
-        sumY += kps[i].pt.y;
-        sumY2 += kps[i].pt.y * kps[i].pt.y;
-        sumXY += kps[i].pt.x * kps[i].pt.y;
-    }
-    double num = kps.size() * sumXY - sumX * sumY;
-    double denom = sqrt((kps.size()*sumX2 - sumX * sumX)*
-            (kps.size()*sumY2 - sumY * sumY));
-    return -num / denom;
-}
-
-double findLSRLSlope(const vector<KeyPoint>& kps) {
-    return findR(kps) * findStdDevY(kps) / findStdDevX(kps);
-}
 
 int main(int argc, char **argv) {
     if (argc == 1) {
@@ -138,7 +87,7 @@ int main(int argc, char **argv) {
 
     CornerDetector cd(detectorType);
 
-    typedef pair<string, std::function<double(const vector<KeyPoint>&)>> flagFn;
+    typedef pair<string, std::function<double(const Frame&)>> flagFn;
     flagFn flagfns[] =
     {
         flagFn("slope", findAverageSlope),
@@ -151,21 +100,23 @@ int main(int argc, char **argv) {
     };
     auto pFunc = [&] (Mat& m) {
         Mat out;
-        auto kps = cd.getKeyPoints(m);
+        //auto kps = cd.getKeyPoints(m);
+        Frame f(m);
+        f.calculate(cd);
         bool first = true;
         for (uint32_t i = 0; i < sizeof(flagfns)/sizeof(flagfns[0]); ++i) {
             if (flags.isSet(flagfns[i].first)) {
                 if (!first) {
                     cout << ", ";
                 }
-                cout << flagfns[i].second(kps);
+                cout << flagfns[i].second(f);
                 first = false;
             }
         }
         if (!first) {
             cout << endl;
         }
-        cv::drawKeypoints(m, kps, out);
+        cv::drawKeypoints(m, f.getKeyPoints(), out);
         return out;
     };
 
@@ -207,7 +158,7 @@ int main(int argc, char **argv) {
 
         cv::namedWindow("feed", 1);
         Mat image = cf.getNextFrame();
-        while(!image.empty() && cv::waitKey(1) != 27) {
+        while(!image.empty()) {
             cv::imshow("feed", image);
             image = cf.getNextFrame();
         }
