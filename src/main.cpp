@@ -207,9 +207,8 @@ int main(int argc, char **argv) {
 
         cv::namedWindow("feed", 1);
         Mat image = cf.getNextFrame();
-        while(!image.empty()) {
+        while(!image.empty() && cv::waitKey(1) != 27) {
             cv::imshow("feed", image);
-            cv::waitKey(1);
             image = cf.getNextFrame();
         }
     } else if (flags.getArg(1) == "analyze") {
