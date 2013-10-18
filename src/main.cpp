@@ -143,7 +143,7 @@ int main(int argc, char **argv) {
         std::unique_ptr<Camera> cam(new Camera(0));
         CamFilter cf(std::move(cam), pFunc);
 
-        cv::namedWindow("feed", 1);
+        cv::namedWindow("feed", CV_WINDOW_AUTOSIZE);
         do {
             Mat image = cf.getNextFrame();
             cv::imshow("feed", image);
