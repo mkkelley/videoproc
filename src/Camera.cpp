@@ -8,7 +8,8 @@ Camera::Camera() : _fps(-1) {
 }
 
 Camera::Camera(int which) : _cap(which), _fps(-1) {
-
+    _cap.set(CV_CAP_PROP_FRAME_WIDTH, 1280);
+    _cap.set(CV_CAP_PROP_FRAME_HEIGHT, 720);
 }
 
 Camera::~Camera() {

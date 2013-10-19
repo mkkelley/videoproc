@@ -141,6 +141,7 @@ int main(int argc, char **argv) {
         r.record("output.avi", 100);
     } else if (flags.getArg(1) == "realtime") {
         std::unique_ptr<Camera> cam(new Camera(0));
+        cout << cam->getSize() << endl;
         CamFilter cf(std::move(cam), pFunc);
 
         cv::namedWindow("feed", CV_WINDOW_AUTOSIZE);
