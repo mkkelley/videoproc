@@ -178,9 +178,13 @@ int main(int argc, char **argv) {
             image = cf.getNextFrame();
         }
     } else if (flags.getArg(1) == "test") {
-        std::unique_ptr<Camera> cam(new Camera(0));
-        CamFilter(std::move(cam), pFunc);
-
+        cv::namedWindow("test", CV_WINDOW_AUTOSIZE);
+        int key = cv::waitKey(10);
+        do {
+            cout << key << endl;
+            key = cv::waitKey();
+            if (key >= 65536) key -= 65536;
+        } while (key != 27);
     } else {
         showHelp();
         return 1;
