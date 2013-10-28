@@ -74,6 +74,11 @@ double Frame::getStdDevY() const {
     return sqrt(acc/_keyPoints.size());
 }
 
+/* Equation: where E is the sum operator
+ *                     n*E(x*y) - E(x)*E(y)
+ * r = --------------------------------------------------
+ *     √((n*E(x^2) - E(x)*E(x)) * (n*E(y^2) - E(y)*E(y)))
+ */
 double Frame::getR() const {
     double sumX = 0;
     double sumY = 0;
@@ -89,22 +94,17 @@ double Frame::getR() const {
         sumY2 += y * y;
         sumXY += x * y;
     }
-    /* Equation: where E is the sum operator
-     *                     n*E(x*y) - E(x)*E(y)
-     * r = --------------------------------------------------
-     *     √((n*E(x^2) - E(x)*E(x)) * (n*E(y^2) - E(y)*E(y)))
-     */
     double num = _keyPoints.size() * sumXY - sumX * sumY;
     double denom = sqrt((_keyPoints.size()*sumX2 - sumX * sumX)*
             (_keyPoints.size()*sumY2 - sumY * sumY));
     return -num / denom;
 }
 
+/* Equation:
+ *             Sy
+ * slope = r * --
+ *             Sx
+ */
 double Frame::getLSRLSlope() const {
-    /* Equation:
-     *             Sy
-     * slope = r * --
-     *             Sx
-     */
     return getR() * getStdDevY() / getStdDevX();
 }
