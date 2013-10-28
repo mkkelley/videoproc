@@ -81,11 +81,13 @@ double Frame::getR() const {
     double sumY2 = 0;
     double sumXY = 0;
     for (uint32_t i = 0; i < _keyPoints.size(); ++i) {
-        sumX += _keyPoints[i].pt.x;
-        sumX2 += _keyPoints[i].pt.x * _keyPoints[i].pt.x;
-        sumY += _keyPoints[i].pt.y;
-        sumY2 += _keyPoints[i].pt.y * _keyPoints[i].pt.y;
-        sumXY += _keyPoints[i].pt.x * _keyPoints[i].pt.y;
+        int x = _keyPoints[i].pt.x;
+        int y = _keyPoints[i].pt.y;
+        sumX += x;
+        sumX2 += x * x;
+        sumY += y;
+        sumY2 += y * y;
+        sumXY += x * y;
     }
     double num = _keyPoints.size() * sumXY - sumX * sumY;
     double denom = sqrt((_keyPoints.size()*sumX2 - sumX * sumX)*
