@@ -1,4 +1,5 @@
 
+include_directories ( ../include )
 add_library (videoproc 
     Camera.cpp
     Recorder.cpp
