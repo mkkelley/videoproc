@@ -12,22 +12,32 @@ using std::cout;
 using std::endl;
 using std::ostream_iterator;
 
+namespace test {
+
+    Mat image = imread("test1.png", CV_LOAD_IMAGE_COLOR);
+    Frame f(image);
+    CornerDetector cd;
+
+    bool getLSRLSlope() {
+        f.calculate(cd);
+        return abs(f.getLSRLSlope() - 1.01) < .01;
+    }
+
+    bool getAverageSlope() {
+        f.calculate(cd);
+        return abs(f.getAverageSlope() - .86) < .01;
+    }
+}
+
 int main(int argc, char **argv) {
     Mat image = imread("test1.png", CV_LOAD_IMAGE_COLOR);
-    /*
-    cv::namedWindow("test", CV_WINDOW_AUTOSIZE);
-    cv::imshow("test", image);
-    cv::waitKey(0);
-    */
+
     Frame f(image);
     CornerDetector cd;
     f.calculate(cd);
     cout << f.getLSRLSlope() << endl;
     cout << f.getAverageSlope() << endl;
-    auto kps = f.getKeyPoints();
-    for (std::vector<KeyPoint>::size_type i = 0; i < kps.size(); i++) {
-        cout << kps[i].pt << endl;
-    }
-    //std::cout << f.getKeyPoints() << std::endl;
+    cout << test::getLSRLSlope() << endl;
+    cout << test::getAverageSlope() << endl;
     return 0;
 }
