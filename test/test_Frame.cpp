@@ -20,14 +20,36 @@ namespace test {
     Frame f(image);
     CornerDetector cd("PyramidGFTT");
 
+    const double epsilon = .0001;
+
     bool getLSRLSlope() {
         f.calculate(cd);
-        return abs(f.getLSRLSlope() - 1.01) < .01;
+        return abs(f.getLSRLSlope() - 1.0098) < 10 * epsilon;
     }
 
     bool getAverageSlope() {
         f.calculate(cd);
-        return abs(f.getAverageSlope() - .86) < .01;
+        return abs(f.getAverageSlope() - .856296) < epsilon;
+    }
+
+    bool getAverageX() {
+        f.calculate(cd);
+        return abs(f.getAverageX() - 3.3) < epsilon;
+    }
+
+    bool getAverageY() {
+        f.calculate(cd);
+        return abs(f.getAverageY() - 5.5) < epsilon;
+    }
+
+    bool getStdDevX() {
+        f.calculate(cd);
+        return abs(f.getStdDevX() - 2.0025) < epsilon;
+    }
+
+    bool getStdDevY() {
+        f.calculate(cd);
+        return abs(f.getStdDevY() - 2.1095) < epsilon;
     }
 }
 
@@ -35,6 +57,9 @@ int main(int argc, char **argv) {
     TestSet tests;
     tests.registerTest(test::getLSRLSlope, "getLSRLSlope");
     tests.registerTest(test::getAverageSlope, "getAverageSlope");
-    tests.runTests();
-    return 0;
+    tests.registerTest(test::getAverageX, "getAverageX");
+    tests.registerTest(test::getAverageY, "getAverageY");
+    tests.registerTest(test::getStdDevX, "getStdDevX");
+    tests.registerTest(test::getStdDevY, "getStdDevY");
+    return tests.runTests();
 }
