@@ -18,7 +18,7 @@ namespace test {
 
     Mat image = imread("test1.png", CV_LOAD_IMAGE_COLOR);
     Frame f(image);
-    CornerDetector cd;
+    CornerDetector cd("PyramidGFTT");
 
     bool getLSRLSlope() {
         f.calculate(cd);
