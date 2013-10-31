@@ -5,6 +5,8 @@
 #include <algorithm>
 #include <iterator>
 
+#include "TestSet.h"
+
 using cv::KeyPoint;
 using cv::Mat;
 using cv::imread;
@@ -30,14 +32,9 @@ namespace test {
 }
 
 int main(int argc, char **argv) {
-    Mat image = imread("test1.png", CV_LOAD_IMAGE_COLOR);
-
-    Frame f(image);
-    CornerDetector cd;
-    f.calculate(cd);
-    cout << f.getLSRLSlope() << endl;
-    cout << f.getAverageSlope() << endl;
-    cout << test::getLSRLSlope() << endl;
-    cout << test::getAverageSlope() << endl;
+    TestSet tests;
+    tests.registerTest(test::getLSRLSlope, "getLSRLSlope");
+    tests.registerTest(test::getAverageSlope, "getAverageSlope");
+    tests.runTests();
     return 0;
 }
