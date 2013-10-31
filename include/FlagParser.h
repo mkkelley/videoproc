@@ -2,6 +2,7 @@
 
 #include <vector>
 #include <map>
+#include <stdint.h>
 #include <string>
 
 class FlagParser {

@@ -1,5 +1,7 @@
 #include "Camera.h"
 
+#include <time.h>
+
 using std::vector;
 using cv::Mat;
 using cv::Size;

@@ -1,5 +1,8 @@
 #include "Frame.h"
 
+#include <numeric>
+#include <stdint.h>
+
 using std::vector;
 using cv::KeyPoint;
 using cv::Mat;
