@@ -64,11 +64,7 @@ double Frame::getAverageY() const {
 }
 
 double Frame::getStdDevX() const {
-    double sum = std::accumulate(begin(_keyPoints), end(_keyPoints), 0.0,
-            [] (const double x, const KeyPoint& y) {
-            return x + y.pt.x;
-            });
-    double m = sum / _keyPoints.size();
+    double m = getAverageX();
     double acc = 0.0;
     std::for_each(begin(_keyPoints), end(_keyPoints), [&](const KeyPoint& k) {
             acc += (k.pt.x - m) * (k.pt.x - m);
@@ -77,11 +73,7 @@ double Frame::getStdDevX() const {
 }
 
 double Frame::getStdDevY() const {
-    double sum = std::accumulate(begin(_keyPoints), end(_keyPoints), 0.0,
-            [] (const double x, const KeyPoint& y) {
-            return x + y.pt.y;
-            });
-    double m = sum / _keyPoints.size();
+    double m = getAverageY();
     double acc = 0.0;
     std::for_each(begin(_keyPoints), end(_keyPoints), [&](const KeyPoint& k) {
             acc += (k.pt.y - m) * (k.pt.y - m);
