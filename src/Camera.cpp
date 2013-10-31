@@ -51,7 +51,7 @@ double Camera::getHeight() {
 }
 
 Size Camera::getSize() {
-    return Size(getWidth(), getHeight());
+    return Size((int)getWidth(), (int)getHeight());
 }
 
 Mat Camera::getNextFrame() {
