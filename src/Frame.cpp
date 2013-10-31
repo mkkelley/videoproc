@@ -42,10 +42,10 @@ double Frame::getAverageSlope() const {
  *      n
  */
 double Frame::getAverageX() const {
-    double sum = 0;
-    for (uint32_t i = 0; i < _keyPoints.size(); ++i) {
-        sum += _keyPoints[i].pt.x;
-    }
+    double sum = std::accumulate(begin(_keyPoints), end(_keyPoints), 0.0,
+            [](const double x, const KeyPoint& y) {
+            return x + y.pt.x;
+            });
     return sum / _keyPoints.size();
 }
 
@@ -56,10 +56,10 @@ double Frame::getAverageX() const {
  *      n
  */
 double Frame::getAverageY() const {
-    double sum = 0;
-    for (uint32_t i = 0; i < _keyPoints.size(); ++i) {
-        sum += _keyPoints[i].pt.y;
-    }
+    double sum = std::accumulate(begin(_keyPoints), end(_keyPoints), 0.0,
+            [](const double x, const KeyPoint& y) {
+            return x + y.pt.y;
+            });
     return sum / _keyPoints.size();
 }
 
