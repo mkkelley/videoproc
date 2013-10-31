@@ -35,6 +35,12 @@ double Frame::getAverageSlope() const {
     return almostSum;
 }
 
+/* Equation:
+ *
+ *     E(x)
+ * x = ----
+ *      n
+ */
 double Frame::getAverageX() const {
     double sum = 0;
     for (uint32_t i = 0; i < _keyPoints.size(); ++i) {
@@ -43,6 +49,12 @@ double Frame::getAverageX() const {
     return sum / _keyPoints.size();
 }
 
+/* Equation:
+ *
+ *     E(y)
+ * y = ----
+ *      n
+ */
 double Frame::getAverageY() const {
     double sum = 0;
     for (uint32_t i = 0; i < _keyPoints.size(); ++i) {
