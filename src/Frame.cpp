@@ -32,7 +32,7 @@ double Frame::getAverageSlope() const {
         almostSum += (localSum / (_keyPoints.size() - 1));
     }
     almostSum /= _keyPoints.size();
-    return almostSum;
+    return -almostSum;
 }
 
 /* Equation:
