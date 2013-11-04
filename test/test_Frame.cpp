@@ -51,6 +51,11 @@ namespace test {
         f.calculate(cd);
         return abs(f.getStdDevY() - 2.1095) < epsilon;
     }
+
+    bool getR() {
+        f.calculate(cd);
+        return abs(f.getR() - .958744) < epsilon;
+    }
 }
 
 int main(int argc, char **argv) {
@@ -61,5 +66,6 @@ int main(int argc, char **argv) {
     tests.registerTest(test::getAverageY, "getAverageY");
     tests.registerTest(test::getStdDevX, "getStdDevX");
     tests.registerTest(test::getStdDevY, "getStdDevY");
+    tests.registerTest(test::getR, "getR");
     return tests.runTests();
 }
