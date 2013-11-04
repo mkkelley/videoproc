@@ -1,18 +1,11 @@
 #include "Frame.h"
 
 #include <opencv2/opencv.hpp>
-#include <iostream>
-#include <algorithm>
-#include <iterator>
 
 #include "TestSet.h"
 
-using cv::KeyPoint;
 using cv::Mat;
 using cv::imread;
-using std::cout;
-using std::endl;
-using std::ostream_iterator;
 
 namespace test {
 
