@@ -67,5 +67,5 @@ int main(int argc, char **argv) {
     tests.registerTest(test::getStdDevX, "getStdDevX");
     tests.registerTest(test::getStdDevY, "getStdDevY");
     tests.registerTest(test::getR, "getR");
-    return tests.runTests();
+    return tests.runTests() ? 0 : 1;
 }
