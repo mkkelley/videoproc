@@ -1,6 +1,5 @@
-
 include_directories ( ../include )
-add_library (videoproc 
+SET( SOURCES
     Camera.cpp
     Recorder.cpp
     Video.cpp
@@ -9,6 +8,10 @@ add_library (videoproc
     FlagParser.cpp
     CamFilter.cpp
     Frame.cpp
+    )
+add_library ( videoproc
+    ${SOURCES}
+    ${HEADERS}
     )
 add_executable( videocap main.cpp )
 target_link_libraries( videocap videoproc ${OpenCV_LIBS} )
