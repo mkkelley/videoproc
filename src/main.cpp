@@ -47,14 +47,14 @@ double findLSRLSlope(const Frame& f) {
 
 void showHelp() {
     cout << "Valid options include:\n"
-        << "\trecord\n"
-        << "\tstitch [outfilename]\n"
-        << "\tcorners [infilename]\n"
-        << "\n"
-        << "\trealtime\n"
-        << "\tvideo filename\n"
-        << "\n"
-        << "\t[--type=ALGO] to set the keypoint extraction technique\n";
+        "\trecord\n"
+        "\tstitch [outfilename]\n"
+        "\tcorners [infilename]\n"
+        "\n"
+        "\trealtime\n"
+        "\tvideo filename\n"
+        "\n"
+        "\t[--type=ALGO] to set the keypoint extraction technique\n";
 }
 
 int stitch(string filename) {
