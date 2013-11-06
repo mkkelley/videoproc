@@ -7,7 +7,8 @@ RealtimeViewer::RealtimeViewer()
     _layout(new QVBoxLayout()),
     _view(new MatView()),
     _cam(new Camera(0)),
-    _capturing(true)
+    _capturing(true),
+    _timer(new QTimer(this))
 {
     auto f = _cam->getNextFrame();
     _view->setMat(f);
@@ -16,6 +17,16 @@ RealtimeViewer::RealtimeViewer()
     setLayout(_layout);
 
     connect(_toggleButton, SIGNAL(released()), this, SLOT(handleToggleButton()));
+    connect(_timer, SIGNAL(timeout()), this, SLOT(updateDisplay()));
+    _timer->start(0);
+}
+
+void RealtimeViewer::updateDisplay() {
+    if (!_capturing) {
+        return;
+    }
+    cv::Mat f = _cam->getNextFrame();
+    _view->setMat(f);
 }
 
 void RealtimeViewer::handleToggleButton() {
@@ -33,6 +44,7 @@ void RealtimeViewer::startCamera() {
     if (!_capturing) {
         _cam = new Camera(0);
         _capturing = true;
+        _timer->start(0);
     }
 }
 
