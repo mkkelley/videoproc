@@ -30,25 +30,26 @@ void RealtimeViewer::handleToggleButton() {
     if (_capturing) {
         _toggleButton->setText("Start");
         stopCamera();
-        return;
+    } else {
+        _toggleButton->setText("Stop");
+        startCamera();
     }
-
-    _toggleButton->setText("Stop");
-    startCamera();
 }
 
 void RealtimeViewer::startCamera() {
-    if (!_capturing) {
-        _cam = new Camera(0);
-        _capturing = true;
-        _timer->start(0);
+    if (_capturing) {
+        return;
     }
+    _cam = new Camera(0);
+    _capturing = true;
+    _timer->start(0);
 }
 
 void RealtimeViewer::stopCamera() {
-    if (_capturing) {
-        delete _cam;
-        _capturing = false;
-        _timer->stop();
+    if (!_capturing) {
+        return;
     }
+    delete _cam;
+    _capturing = false;
+    _timer->stop();
 }
