@@ -1,8 +1,6 @@
 #include "FlagParser.h"
 
 using std::string;
-using std::vector;
-using std::map;
 
 FlagParser::FlagParser(int argc, char **argv) : _args(argc) {
     for (int i = 0; i < argc; i++) {

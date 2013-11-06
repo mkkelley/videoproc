@@ -11,11 +11,9 @@
 
 using std::cout;
 using std::endl;
-using std::map;
 using std::pair;
 using std::string;
 using std::to_string;
-using std::vector;
 using cv::KeyPoint;
 using cv::Mat;
 

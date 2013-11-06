@@ -1,7 +1,6 @@
 #include "View.h"
 
 using std::function;
-using std::vector;
 using cv::Mat;
 
 Mat View::getNextFrame() {
