@@ -52,5 +52,6 @@ void RealtimeViewer::stopCamera() {
     if (_capturing) {
         delete _cam;
         _capturing = false;
+        _timer->stop();
     }
 }
