@@ -1,6 +1,9 @@
 #include "RealtimeViewer.h"
 
-#include "MatView.h"
+#include "CamFilter.h"
+#include "Frame.h"
+
+using cv::Mat;
 
 RealtimeViewer::RealtimeViewer()
     :_toggleButton(new QPushButton("Stop")),
@@ -40,9 +43,19 @@ void RealtimeViewer::startCamera() {
     if (_capturing) {
         return;
     }
-    _cam = new Camera(0);
+    std::unique_ptr<Camera> cam(new Camera(0));
+    _cam = new CamFilter(std::move(cam), analyzeFrame);
     _capturing = true;
     _timer->start(0);
+}
+
+Mat RealtimeViewer::analyzeFrame(Mat& inp) {
+    static CornerDetector cd;
+    Mat out;
+    Frame f(inp);
+    f.calculate(cd);
+    cv::drawKeypoints(inp, f.getKeyPoints(), out);
+    return out;
 }
 
 void RealtimeViewer::stopCamera() {

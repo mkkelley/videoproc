@@ -7,6 +7,7 @@
 #include <QTimer>
 
 #include "Camera.h"
+#include "CornerDetector.h"
 #include "MatView.h"
 
 class RealtimeViewer : public QWidget {
@@ -21,10 +22,11 @@ class RealtimeViewer : public QWidget {
         QPushButton *_toggleButton;
         QLayout *_layout;
         MatView *_view;
-        Camera *_cam;
+        View *_cam;
         bool _capturing;
         QTimer *_timer;
 
+        static cv::Mat analyzeFrame(cv::Mat&);
         void startCamera();
         void stopCamera();
 };
