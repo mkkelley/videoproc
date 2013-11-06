@@ -54,7 +54,7 @@ Size Camera::getSize() {
     return Size((int)getWidth(), (int)getHeight());
 }
 
-Mat Camera::getNextFrame() {
+Mat Camera::getNextRawFrame() {
     Mat image;
     _cap >> image;
     return image;

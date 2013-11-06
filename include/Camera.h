@@ -11,7 +11,7 @@ class Camera : public View {
         double getHeight();
         cv::Size getSize();
         double getFps();
-        cv::Mat getNextFrame();
+        cv::Mat getNextRawFrame();
         std::vector<cv::Mat> captureVideo(int frames);
         Camera();
         Camera(int which);

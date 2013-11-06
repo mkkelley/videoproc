@@ -6,8 +6,8 @@ SET( SOURCES
     VideoStitcher.cpp
     CornerDetector.cpp
     FlagParser.cpp
-    CamFilter.cpp
     Frame.cpp
+    View.cpp
     )
 add_library ( videoproc
     ${SOURCES}

@@ -1,7 +1,8 @@
 #pragma once
 
-#include <opencv2/opencv.hpp>
+#include <functional>
 #include <vector>
+#include <opencv2/opencv.hpp>
 
 class View {
     public:
@@ -9,7 +10,12 @@ class View {
         virtual double getHeight() = 0;
         virtual cv::Size getSize() = 0;
         virtual double getFps() = 0;
-        virtual cv::Mat getNextFrame() = 0;
+        virtual cv::Mat getNextRawFrame() = 0;
         virtual std::vector<cv::Mat> captureVideo(int frames) = 0;
         virtual ~View() {};
+
+        cv::Mat getNextFrame();
+        void addFilter(std::function<cv::Mat(cv::Mat&)>);
+    private:
+        std::vector<std::function<cv::Mat(cv::Mat&)>> _filters;
 };

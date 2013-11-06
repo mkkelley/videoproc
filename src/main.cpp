@@ -2,7 +2,6 @@
 #include <opencv2/opencv.hpp>
 
 #include "Camera.h"
-#include "CamFilter.h"
 #include "CornerDetector.h"
 #include "FlagParser.h"
 #include "Frame.h"
@@ -142,11 +141,11 @@ int main(int argc, char **argv) {
     } else if (flags.getArg(1) == "realtime") {
         std::unique_ptr<Camera> cam(new Camera(0));
         cout << cam->getSize() << endl;
-        CamFilter cf(std::move(cam), pFunc);
+        cam->addFilter(pFunc);
 
         cv::namedWindow("feed", CV_WINDOW_AUTOSIZE);
         do {
-            Mat image = cf.getNextFrame();
+            Mat image = cam->getNextFrame();
             cv::imshow("feed", image);
         } while (cv::waitKey(1) != 27);
     } else if (flags.getArg(1) == "video") {
@@ -156,13 +155,13 @@ int main(int argc, char **argv) {
         }
 
         std::unique_ptr<Video> v(new Video(flags.getArg(2)));
-        CamFilter cf(std::move(v), pFunc);
+        v->addFilter(pFunc);
 
         cv::namedWindow("feed", 1);
-        Mat image = cf.getNextFrame();
+        Mat image =v->getNextFrame();
         while(!image.empty() && cv::waitKey(1) != 27) {
             cv::imshow("feed", image);
-            image = cf.getNextFrame();
+            image = v->getNextFrame();
         }
     } else if (flags.getArg(1) == "analyze") {
         if (flags.getNumArgs() < 3) {
@@ -171,11 +170,11 @@ int main(int argc, char **argv) {
         }
 
         std::unique_ptr<Video> v(new Video(flags.getArg(2)));
-        CamFilter cf(std::move(v), pFunc);
+        v->addFilter(pFunc);
 
-        Mat image = cf.getNextFrame();
+        Mat image = v->getNextFrame();
         while(!image.empty()) {
-            image = cf.getNextFrame();
+            image = v->getNextFrame();
         }
     } else if (flags.getArg(1) == "test") {
         cv::namedWindow("test", CV_WINDOW_AUTOSIZE);

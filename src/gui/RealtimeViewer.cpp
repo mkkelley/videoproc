@@ -1,6 +1,5 @@
 #include "RealtimeViewer.h"
 
-#include "CamFilter.h"
 #include "Frame.h"
 
 using cv::Mat;
@@ -43,8 +42,8 @@ void RealtimeViewer::startCamera() {
     if (_capturing) {
         return;
     }
-    std::unique_ptr<Camera> cam(new Camera(0));
-    _cam = new CamFilter(std::move(cam), analyzeFrame);
+    _cam = new Camera(0);
+    _cam->addFilter(analyzeFrame);
     _capturing = true;
     _timer->start(0);
 }
