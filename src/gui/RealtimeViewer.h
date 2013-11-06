@@ -19,5 +19,9 @@ class RealtimeViewer : public QWidget {
         QPushButton *_toggleButton;
         QLayout *_layout;
         MatView *_view;
-        std::unique_ptr<Camera> _cam;
+        Camera *_cam;
+        bool _capturing;
+
+        void startCamera();
+        void stopCamera();
 };
