@@ -12,7 +12,7 @@ MatView::MatView(const Mat& mat, QWidget *parent)
     setMat(mat);
 }
 
-MatView::MatView(QWidget *parent) {
+MatView::MatView(QWidget *parent)
     : QLabel(parent)
 {
 }
@@ -25,11 +25,6 @@ void MatView::setMat(const Mat& mat) {
             tmp.cols,
             tmp.rows,
             QImage::Format_RGB888);
-    cout << image.width() << endl;
-    cout << image.bytesPerLine() << endl;
-    cout << tmp.step << endl;
-    //QImage i2(image);
-    //i2.detach();
     QPixmap pixmap = QPixmap::fromImage(image);
     setPixmap(pixmap);
 }

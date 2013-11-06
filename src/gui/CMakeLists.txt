@@ -6,10 +6,12 @@ set ( GUI_SOURCES
     main.cpp
     MainWindow.cpp
     MatView.cpp
+    RealtimeViewer.cpp
     )
 set ( GUI_HEADERS
     MainWindow.h
     MatView.h
+    RealtimeViewer.h
     )
 QT4_WRAP_CPP(GUI_HEADERS_MOC ${GUI_HEADERS})
 add_executable ( gui

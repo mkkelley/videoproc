@@ -9,33 +9,37 @@
 #include "CamFilter.h"
 #include "CornerDetector.h"
 #include "Frame.h"
+#include "RealtimeViewer.h"
 
+using std::unique_ptr;
 using cv::Mat;
 
 MainWindow::MainWindow(QWidget *parent)
-    : QMainWindow(parent)
+    : QMainWindow(parent),
+    _centralWidget(new QWidget()),
+    _realtimeButton(new QPushButton("Realtime")),
+    _recordButton(new QPushButton("Record"))
 {
-    _realtimeButton = new QPushButton("Realtime");
-    _recordButton = new QPushButton("Record");
-
     QVBoxLayout *layout = new QVBoxLayout();
+
     layout->addWidget(_realtimeButton);
     layout->addWidget(_recordButton);
 
-    QWidget *window = new QWidget();
-    window->setLayout(layout);
-    setCentralWidget(window);
+    _centralWidget->setLayout(layout);
+    setCentralWidget(_centralWidget);
 
     connect(_realtimeButton, SIGNAL(released()), this, SLOT(handleRealtimeButton()));
     connect(_recordButton, SIGNAL(released()), this, SLOT(handleRecordButton()));
 }
 
 MainWindow::~MainWindow() {
-    delete _realtimeButton;
-    delete _recordButton;
 }
 
 void MainWindow::handleRealtimeButton() {
+    RealtimeViewer *rv = new RealtimeViewer();
+
+    setCentralWidget(rv);
+    /*
     CornerDetector cd;
     static auto pFunc = [&cd] (Mat& m) {
         Mat out;
@@ -54,6 +58,7 @@ void MainWindow::handleRealtimeButton() {
         cv::imshow("realtime feed", image);
     } while (cv::waitKey(1) != 27);
     cv::destroyWindow("realtime feed");
+    */
 }
 
 void MainWindow::handleRecordButton() {

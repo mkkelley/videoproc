@@ -1,5 +1,6 @@
 #pragma once
 
+#include <memory>
 #include <QMainWindow>
 #include <QPushButton>
 
@@ -13,6 +14,7 @@ class MainWindow : public QMainWindow {
         void handleRealtimeButton();
         void handleRecordButton();
     private:
+        QWidget *_centralWidget;
         QPushButton *_realtimeButton;
         QPushButton *_recordButton;
 };
