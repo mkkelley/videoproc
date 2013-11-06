@@ -8,5 +8,7 @@ class MatView : public QLabel {
 
     public:
         MatView(const cv::Mat&, QWidget *parent = 0);
+        MatView(QWidget *parent = 0);
         ~MatView(){};
+        void setMat(const cv::Mat&);
 };

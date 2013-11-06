@@ -9,6 +9,15 @@ using cv::Mat;
 MatView::MatView(const Mat& mat, QWidget *parent)
     : QLabel(parent)
 {
+    setMat(mat);
+}
+
+MatView::MatView(QWidget *parent) {
+    : QLabel(parent)
+{
+}
+
+void MatView::setMat(const Mat& mat) {
     Mat tmp;
     cv::cvtColor(mat, tmp, CV_BGR2RGB);
     QImage image(
