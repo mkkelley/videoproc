@@ -1,14 +1,9 @@
 #include "MainWindow.h"
 
-#include <memory>
 #include <opencv2/opencv.hpp>
 #include <QCoreApplication>
 #include <QVBoxLayout>
 
-#include "Camera.h"
-#include "CamFilter.h"
-#include "CornerDetector.h"
-#include "Frame.h"
 #include "RealtimeViewer.h"
 
 using std::unique_ptr;
@@ -28,8 +23,10 @@ MainWindow::MainWindow(QWidget *parent)
     _centralWidget->setLayout(layout);
     setCentralWidget(_centralWidget);
 
-    connect(_realtimeButton, SIGNAL(released()), this, SLOT(handleRealtimeButton()));
-    connect(_recordButton, SIGNAL(released()), this, SLOT(handleRecordButton()));
+    connect(_realtimeButton, SIGNAL(released()),
+            this, SLOT(handleRealtimeButton()));
+    connect(_recordButton, SIGNAL(released()),
+            this, SLOT(handleRecordButton()));
 }
 
 MainWindow::~MainWindow() {
