@@ -13,7 +13,7 @@ class MainWindow : public QMainWindow {
         void handleRealtimeButton();
         void handleRecordButton();
     private:
-        QWidget *_centralWidget;
+        QWidget *_mainMenu;
         QPushButton *_realtimeButton;
         QPushButton *_recordButton;
 };

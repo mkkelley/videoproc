@@ -11,7 +11,7 @@ using cv::Mat;
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent),
-    _centralWidget(new QWidget()),
+    _mainMenu(new QWidget()),
     _realtimeButton(new QPushButton("Realtime")),
     _recordButton(new QPushButton("Record"))
 {
@@ -20,8 +20,8 @@ MainWindow::MainWindow(QWidget *parent)
     layout->addWidget(_realtimeButton);
     layout->addWidget(_recordButton);
 
-    _centralWidget->setLayout(layout);
-    setCentralWidget(_centralWidget);
+    _mainMenu->setLayout(layout);
+    setCentralWidget(_mainMenu);
 
     connect(_realtimeButton, SIGNAL(released()),
             this, SLOT(handleRealtimeButton()));
