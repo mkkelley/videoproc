@@ -10,31 +10,28 @@ using std::unique_ptr;
 using cv::Mat;
 
 MainWindow::MainWindow(QWidget *parent)
-    : QMainWindow(parent),
-    _mainMenu(new QWidget()),
-    _realtimeButton(new QPushButton("Realtime")),
-    _recordButton(new QPushButton("Record"))
+    : QMainWindow(parent)
 {
-    QVBoxLayout *layout = new QVBoxLayout();
-
-    layout->addWidget(_realtimeButton);
-    layout->addWidget(_recordButton);
-
-    _mainMenu->setLayout(layout);
-    setCentralWidget(_mainMenu);
-
-    connect(_realtimeButton, SIGNAL(released()),
-            this, SLOT(handleRealtimeButton()));
-    connect(_recordButton, SIGNAL(released()),
-            this, SLOT(handleRecordButton()));
+    resetMainWindow();
 }
 
 MainWindow::~MainWindow() {
 }
 
 void MainWindow::handleRealtimeButton() {
-    RealtimeViewer *rv = new RealtimeViewer();
-    setCentralWidget(rv);
+    auto *realtimeInterface = new QWidget(this);
+    auto *backButton = new QPushButton("Back", realtimeInterface);
+    auto *rv = new RealtimeViewer(realtimeInterface);
+
+    auto *vlayout = new QVBoxLayout();
+    vlayout->addWidget(backButton);
+    vlayout->addWidget(rv);
+    realtimeInterface->setLayout(vlayout);
+
+    connect(backButton, SIGNAL(released()),
+            this, SLOT(resetMainWindow()));
+
+    setCentralWidget(realtimeInterface);
 }
 
 void MainWindow::handleRecordButton() {
@@ -42,6 +39,16 @@ void MainWindow::handleRecordButton() {
 }
 
 void MainWindow::resetMainWindow() {
-    delete centralWidget();
+    _mainMenu = new QWidget(this);
+    _realtimeButton = new QPushButton("Realtime", _mainMenu);
+    _recordButton = new QPushButton("Record", _mainMenu);
+    auto *layout = new QVBoxLayout();
+    layout->addWidget(_realtimeButton);
+    layout->addWidget(_recordButton);
+    _mainMenu->setLayout(layout);
     setCentralWidget(_mainMenu);
+    connect(_realtimeButton, SIGNAL(released()),
+            this, SLOT(handleRealtimeButton()));
+    connect(_recordButton, SIGNAL(released()),
+            this, SLOT(handleRecordButton()));
 }
