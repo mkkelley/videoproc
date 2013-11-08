@@ -3,7 +3,7 @@
 #include <memory>
 #include <QWidget>
 #include <QPushButton>
-#include <QVBoxLayout>
+#include <QLayout>
 #include <QTimer>
 
 #include "Camera.h"
