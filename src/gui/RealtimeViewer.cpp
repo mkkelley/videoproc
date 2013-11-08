@@ -8,7 +8,7 @@ RealtimeViewer::RealtimeViewer(QWidget *parent)
     : QWidget(parent),
     _toggleButton(new QPushButton("Stop")),
     _layout(new QVBoxLayout()),
-    _view(new MatView()),
+    _view(new MatView(this)),
     _capturing(false),
     _timer(new QTimer(this))
 {
