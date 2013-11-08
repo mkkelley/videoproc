@@ -12,6 +12,7 @@ class MainWindow : public QMainWindow {
     private slots:
         void handleRealtimeButton();
         void handleRecordButton();
+        void resetMainWindow();
     private:
         QWidget *_mainMenu;
         QPushButton *_realtimeButton;

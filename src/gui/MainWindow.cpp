@@ -40,3 +40,8 @@ void MainWindow::handleRealtimeButton() {
 void MainWindow::handleRecordButton() {
     _recordButton->setText("Pressed");
 }
+
+void MainWindow::resetMainWindow() {
+    delete centralWidget();
+    setCentralWidget(_mainMenu);
+}
