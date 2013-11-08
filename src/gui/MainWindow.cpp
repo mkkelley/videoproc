@@ -47,6 +47,7 @@ void MainWindow::resetMainWindow() {
     layout->addWidget(_recordButton);
     _mainMenu->setLayout(layout);
     setCentralWidget(_mainMenu);
+    adjustSize();
     connect(_realtimeButton, SIGNAL(released()),
             this, SLOT(handleRealtimeButton()));
     connect(_recordButton, SIGNAL(released()),
