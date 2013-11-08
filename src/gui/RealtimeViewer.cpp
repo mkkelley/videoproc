@@ -22,6 +22,7 @@ RealtimeViewer::RealtimeViewer(QWidget *parent)
 }
 
 RealtimeViewer::~RealtimeViewer() {
+    stopCamera();
 }
 
 void RealtimeViewer::updateDisplay() {
