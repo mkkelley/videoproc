@@ -13,8 +13,8 @@
 class RealtimeViewer : public QWidget {
     Q_OBJECT
     public:
-        RealtimeViewer();
-        ~RealtimeViewer(){};
+        RealtimeViewer(QWidget *parent = 0);
+        ~RealtimeViewer();
     private slots:
         void handleToggleButton();
         void updateDisplay();

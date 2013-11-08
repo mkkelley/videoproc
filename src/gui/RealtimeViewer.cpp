@@ -4,8 +4,9 @@
 
 using cv::Mat;
 
-RealtimeViewer::RealtimeViewer()
-    :_toggleButton(new QPushButton("Stop")),
+RealtimeViewer::RealtimeViewer(QWidget *parent)
+    : QWidget(parent),
+    _toggleButton(new QPushButton("Stop")),
     _layout(new QVBoxLayout()),
     _view(new MatView()),
     _capturing(false),
@@ -18,6 +19,9 @@ RealtimeViewer::RealtimeViewer()
     connect(_toggleButton, SIGNAL(released()), this, SLOT(handleToggleButton()));
     connect(_timer, SIGNAL(timeout()), this, SLOT(updateDisplay()));
     startCamera();
+}
+
+RealtimeViewer::~RealtimeViewer() {
 }
 
 void RealtimeViewer::updateDisplay() {
