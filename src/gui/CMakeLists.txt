@@ -1,5 +1,5 @@
 include ( ${QT_USE_FILE} )
-include_directories ( ../../include )
+include_directories ( ../../include include )
 add_definitions ( ${QT_DEFINITIONS} )
 
 set ( GUI_SOURCES
@@ -9,9 +9,9 @@ set ( GUI_SOURCES
     RealtimeViewer.cpp
     )
 set ( GUI_HEADERS
-    MainWindow.h
-    MatView.h
-    RealtimeViewer.h
+    include/MainWindow.h
+    include/MatView.h
+    include/RealtimeViewer.h
     )
 QT4_WRAP_CPP(GUI_HEADERS_MOC ${GUI_HEADERS})
 add_executable ( gui
