@@ -1,10 +1,11 @@
 #pragma once
 
 #include <memory>
-#include <QWidget>
-#include <QPushButton>
+#include <QCheckBox>
 #include <QLayout>
+#include <QPushButton>
 #include <QTimer>
+#include <QWidget>
 
 #include "Camera.h"
 #include "CornerDetector.h"
@@ -20,6 +21,7 @@ class RealtimeViewer : public QWidget {
         void updateDisplay();
     private:
         QPushButton *_toggleButton;
+        QCheckBox *_analyze;
         QLayout *_layout;
         MatView *_view;
         View *_cam;

@@ -6,14 +6,20 @@ using cv::Mat;
 
 RealtimeViewer::RealtimeViewer(QWidget *parent)
     : QWidget(parent),
-    _toggleButton(new QPushButton("Stop")),
+    _toggleButton(new QPushButton("Stop", this)),
+    _analyze(new QCheckBox("Analyze", this)),
     _layout(new QVBoxLayout()),
     _view(new MatView(this)),
     _capturing(false),
     _timer(new QTimer(this))
 {
     _layout->addWidget(_view);
-    _layout->addWidget(_toggleButton);
+
+    auto *buttons = new QHBoxLayout();
+    buttons->addWidget(_toggleButton);
+    buttons->addWidget(_analyze);
+
+    ((QVBoxLayout*)_layout)->addLayout(buttons);
     setLayout(_layout);
 
     connect(_toggleButton, SIGNAL(released()), this, SLOT(handleToggleButton()));
@@ -29,7 +35,7 @@ void RealtimeViewer::updateDisplay() {
     if (!_capturing) {
         return;
     }
-    cv::Mat f = _cam->getNextFrame();
+    Mat f = _analyze->isChecked() ? _cam->getNextFrame() : _cam->getNextRawFrame();
     _view->setMat(f);
 }
 
