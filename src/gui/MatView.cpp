@@ -1,9 +1,5 @@
 #include "MatView.h"
 
-#include <iostream>
-using std::cout;
-using std::endl;
-
 using cv::Mat;
 
 MatView::MatView(const Mat& mat, QWidget *parent)
