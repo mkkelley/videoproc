@@ -3,8 +3,11 @@ project( videocap )
 find_package( OpenCV REQUIRED )
 find_package( Qt4 REQUIRED )
 
-IF("${CMAKE_SYSTEM_NAME}" MATCHES "Linux")
-    SET(CMAKE_CXX_FLAGS "--std=c++11 -Wall -Werror -O3")
+SET(CMAKE_CXX_COMPILER "clang++")
+IF("${CMAKE_CXX_COMPILER}" STREQUAL "clang++")
+    SET(CMAKE_CXX_FLAGS "-std=c++11 -Wall -Werror -Wno-deprecated-register -Wno-uninitialized -O3 -stdlib=libstdc++ -gcc-toolchain /opt/gcc")
+ELSE()
+    SET(CMAKE_CXX_FLAGS "-std=c++11 -Wall -O3")
 ENDIF()
 
 add_subdirectory (src)
