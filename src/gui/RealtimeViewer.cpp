@@ -19,7 +19,7 @@ RealtimeViewer::RealtimeViewer(QWidget *parent)
     buttons->addWidget(_toggleButton);
     buttons->addWidget(_analyze);
 
-    ((QVBoxLayout*)_layout)->addLayout(buttons);
+    static_cast<QVBoxLayout*>(_layout)->addLayout(buttons);
     setLayout(_layout);
 
     connect(_toggleButton, SIGNAL(released()), this, SLOT(handleToggleButton()));
