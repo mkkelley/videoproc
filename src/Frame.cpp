@@ -92,9 +92,9 @@ double Frame::getR() const {
     double sumX2 = 0;
     double sumY2 = 0;
     double sumXY = 0;
-    for (uint32_t i = 0; i < _keyPoints.size(); ++i) {
-        int x = (int)_keyPoints[i].pt.x;
-        int y = (int)_keyPoints[i].pt.y;
+    for (auto &kp : _keyPoints) {
+        int x = (int)kp.pt.x;
+        int y = (int)kp.pt.y;
         sumX += x;
         sumX2 += x * x;
         sumY += y;

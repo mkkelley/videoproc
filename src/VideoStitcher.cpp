@@ -9,7 +9,7 @@ VideoStitcher::VideoStitcher(
         string outputFile,
         double fps,
         int codec) :
-    _outfile(outputFile),
+    _outfile(std::move(outputFile)),
     _fps(fps),
     _codec(codec)
 {

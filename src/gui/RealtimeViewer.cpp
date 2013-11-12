@@ -15,7 +15,7 @@ RealtimeViewer::RealtimeViewer(QWidget *parent)
 {
     _layout->addWidget(_view);
 
-    auto *buttons = new QHBoxLayout();
+    auto buttons = new QHBoxLayout();
     buttons->addWidget(_toggleButton);
     buttons->addWidget(_analyze);
 

@@ -6,8 +6,8 @@ using cv::Mat;
 Mat View::getNextFrame() {
     Mat raw = getNextRawFrame();
     if (raw.empty()) return raw;
-    for (unsigned int i = 0; i < _filters.size(); ++i) {
-        raw = _filters[i](raw);
+    for (auto &filter : _filters) {
+        raw = filter(raw);
     }
     return raw;
 }

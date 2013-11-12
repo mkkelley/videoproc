@@ -101,13 +101,13 @@ int main(int argc, char **argv) {
         Frame f(m);
         f.calculate(cd);
         bool first = true;
-        for (uint32_t i = 0; i < sizeof(flagfns)/sizeof(flagfns[0]); ++i) {
+        for (auto &flagfn : flagfns) {
             //flagfns[i].first is the name of the flag. .second is the function.
-            if (flags.isSet(flagfns[i].first)) {
+            if (flags.isSet(flagfn.first)) {
                 if (!first) {
                     cout << ", ";
                 }
-                cout << flagfns[i].second(f);
+                cout << flagfn.second(f);
                 first = false;
             }
         }

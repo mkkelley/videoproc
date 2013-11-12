@@ -7,12 +7,12 @@
 
 class Camera : public View {
     public:
-        double getWidth();
-        double getHeight();
-        cv::Size getSize();
-        double getFps();
-        cv::Mat getNextRawFrame();
-        std::vector<cv::Mat> captureVideo(int frames);
+        double getWidth() override;
+        double getHeight() override;
+        cv::Size getSize() override;
+        double getFps() override;
+        cv::Mat getNextRawFrame() override;
+        std::vector<cv::Mat> captureVideo(int frames) override;
         Camera();
         Camera(int which);
         virtual ~Camera();
