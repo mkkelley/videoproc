@@ -6,7 +6,6 @@
 
 #include "RealtimeViewer.h"
 
-using std::unique_ptr;
 using cv::Mat;
 
 MainWindow::MainWindow(QWidget *parent)
