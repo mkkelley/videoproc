@@ -22,7 +22,6 @@ class RealtimeViewer : public QWidget {
     private:
         QPushButton *_toggleButton;
         QCheckBox *_analyze;
-        QLayout *_layout;
         MatView *_view;
         View *_cam;
         bool _capturing;

@@ -8,19 +8,19 @@ RealtimeViewer::RealtimeViewer(QWidget *parent)
     : QWidget(parent),
     _toggleButton(new QPushButton("Stop", this)),
     _analyze(new QCheckBox("Analyze", this)),
-    _layout(new QVBoxLayout()),
     _view(new MatView(this)),
     _capturing(false),
     _timer(new QTimer(this))
 {
-    _layout->addWidget(_view);
+    QVBoxLayout* layout = new QVBoxLayout(this);
+    layout->addWidget(_view);
 
     auto buttons = new QHBoxLayout();
     buttons->addWidget(_toggleButton);
     buttons->addWidget(_analyze);
 
-    static_cast<QVBoxLayout*>(_layout)->addLayout(buttons);
-    setLayout(_layout);
+    layout->addLayout(buttons); //layout takes ownership of buttons, don't delete
+    setLayout(layout); //QWidget takes ownership of layout, don't delete
 
     connect(_toggleButton, SIGNAL(released()), this, SLOT(handleToggleButton()));
     connect(_timer, SIGNAL(timeout()), this, SLOT(updateDisplay()));
