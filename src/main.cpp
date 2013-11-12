@@ -126,13 +126,10 @@ int main(int argc, char **argv) {
         }
     } else if (flags.getArg(1) == "record") {
         std::unique_ptr<Camera> cam(new Camera(0));
+        cout << "Retrieving FPS.\n";
         double fps = cam->getFps();
         cout << "FPS: "  << fps << endl;
-
-        cv::Size inputSize = cam->getSize();
-        cout << "Input Resolution: " << inputSize << endl;
-
-        //cam->setFunction(pFunc);
+        cout << "Beginning capture.\n";
 
         Recorder r(std::move(cam));
         r.record("output.avi", 100);
