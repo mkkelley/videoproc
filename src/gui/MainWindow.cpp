@@ -5,6 +5,7 @@
 #include <QVBoxLayout>
 
 #include "RealtimeViewer.h"
+#include "RecorderViewer.h"
 
 using cv::Mat;
 
@@ -34,7 +35,19 @@ void MainWindow::handleRealtimeButton() {
 }
 
 void MainWindow::handleRecordButton() {
-    _recordButton->setText("Pressed");
+    auto* recorderInterface = new QWidget(this);
+    auto* backButton = new QPushButton("Back", recorderInterface);
+    auto* rv = new RecorderViewer(recorderInterface);
+
+    auto* vlayout = new QVBoxLayout();
+    vlayout->addWidget(backButton);
+    vlayout->addWidget(rv);
+    recorderInterface->setLayout(vlayout);
+
+    connect(backButton, SIGNAL(released()),
+            this, SLOT(resetMainWindow()));
+
+    setCentralWidget(recorderInterface);
 }
 
 void MainWindow::resetMainWindow() {
