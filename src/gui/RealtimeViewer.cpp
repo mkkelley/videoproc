@@ -1,15 +1,15 @@
 #include "RealtimeViewer.h"
 
+#include <QLayout>
 #include "Frame.h"
 
 using cv::Mat;
 
 RealtimeViewer::RealtimeViewer(QWidget *parent)
-    : QWidget(parent),
+    : CameraUI(parent),
     _toggleButton(new QPushButton("Stop", this)),
     _analyze(new QCheckBox("Analyze", this)),
     _view(new MatView(this)),
-    _capturing(false),
     _timer(new QTimer(this))
 {
     QVBoxLayout* layout = new QVBoxLayout(this);
@@ -28,7 +28,6 @@ RealtimeViewer::RealtimeViewer(QWidget *parent)
 }
 
 RealtimeViewer::~RealtimeViewer() {
-    stopCamera();
 }
 
 void RealtimeViewer::updateDisplay() {
@@ -49,16 +48,6 @@ void RealtimeViewer::handleToggleButton() {
     }
 }
 
-void RealtimeViewer::startCamera() {
-    if (_capturing) {
-        return;
-    }
-    _cam = new Camera(0);
-    _cam->addFilter(analyzeFrame);
-    _capturing = true;
-    _timer->start(0);
-}
-
 Mat RealtimeViewer::analyzeFrame(Mat& inp) {
     static CornerDetector cd;
     Mat out;
@@ -68,11 +57,11 @@ Mat RealtimeViewer::analyzeFrame(Mat& inp) {
     return out;
 }
 
-void RealtimeViewer::stopCamera() {
-    if (!_capturing) {
-        return;
-    }
-    delete _cam;
-    _capturing = false;
+void RealtimeViewer::afterStart() {
+    _cam->addFilter(analyzeFrame);
+    _timer->start(0);
+}
+
+void RealtimeViewer::afterStop() {
     _timer->stop();
 }

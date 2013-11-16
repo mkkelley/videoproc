@@ -8,12 +8,14 @@ set ( GUI_SOURCES
     MatView.cpp
     RealtimeViewer.cpp
     RecorderViewer.cpp
+    CameraUI.cpp
     )
 set ( GUI_HEADERS
     include/MainWindow.h
     include/MatView.h
     include/RealtimeViewer.h
     include/RecorderViewer.h
+    include/CameraUI.h
     )
 QT4_WRAP_CPP(GUI_HEADERS_MOC ${GUI_HEADERS})
 add_executable ( gui

@@ -5,11 +5,14 @@
 #include <QPushButton>
 
 class RecorderViewer : public QWidget {
-    Q_OBJECT
+    Q_OBJECT;
     public:
         RecorderViewer(QWidget* parent = nullptr);
         ~RecorderViewer();
+    private slots:
+        void handleToggleButton();
     private:
         QPushButton* _toggleButton;
-        QLineEdit* _fileName;
+        QLineEdit* _fileNameEditor;
+        bool _recording;
 };
