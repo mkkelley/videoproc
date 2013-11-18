@@ -5,8 +5,7 @@
 RecorderUI::RecorderUI(QWidget *parent)
     : CameraUI(parent),
     _toggleButton(new QPushButton("Record", this)),
-    _fileNameEditor(new QLineEdit(this)),
-    _recording(false)
+    _fileNameEditor(new QLineEdit(this))
 {
     QVBoxLayout* layout = new QVBoxLayout(this);
     setLayout(layout);

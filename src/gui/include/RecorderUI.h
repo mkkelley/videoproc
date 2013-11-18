@@ -15,5 +15,4 @@ class RecorderUI : public CameraUI {
     private:
         QPushButton* _toggleButton;
         QLineEdit* _fileNameEditor;
-        bool _recording;
 };
