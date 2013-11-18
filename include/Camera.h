@@ -7,8 +7,8 @@
 
 class Camera : public View {
     public:
-        double getWidth() override;
-        double getHeight() override;
+        double getWidth();
+        double getHeight();
         cv::Size getSize() override;
         double getFps() override;
         cv::Mat getNextRawFrame() override;

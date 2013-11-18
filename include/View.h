@@ -6,8 +6,6 @@
 
 class View {
     public:
-        virtual double getWidth() = 0;
-        virtual double getHeight() = 0;
         virtual cv::Size getSize() = 0;
         virtual double getFps() = 0;
         virtual cv::Mat getNextRawFrame() = 0;
