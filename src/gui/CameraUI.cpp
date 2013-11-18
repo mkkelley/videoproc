@@ -25,6 +25,7 @@ void CameraUI::stopCamera() {
         return;
     }
     delete _cam;
+    _cam = nullptr;
     _capturing = false;
     afterStop();
 }
