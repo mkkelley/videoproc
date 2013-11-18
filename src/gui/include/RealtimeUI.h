@@ -7,11 +7,11 @@
 #include "MatView.h"
 #include "CameraUI.h"
 
-class RealtimeViewer : public CameraUI {
+class RealtimeUI : public CameraUI {
     Q_OBJECT;
     public:
-        RealtimeViewer(QWidget *parent = nullptr);
-        ~RealtimeViewer();
+        RealtimeUI(QWidget *parent = nullptr);
+        ~RealtimeUI();
     private slots:
         void handleToggleButton();
         void updateDisplay();

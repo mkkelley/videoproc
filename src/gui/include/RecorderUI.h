@@ -4,11 +4,11 @@
 #include <QLineEdit>
 #include <QPushButton>
 
-class RecorderViewer : public QWidget {
+class RecorderUI : public QWidget {
     Q_OBJECT;
     public:
-        RecorderViewer(QWidget* parent = nullptr);
-        ~RecorderViewer();
+        RecorderUI(QWidget* parent = nullptr);
+        ~RecorderUI();
     private slots:
         void handleToggleButton();
     private:

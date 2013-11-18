@@ -4,8 +4,8 @@
 #include <QCoreApplication>
 #include <QVBoxLayout>
 
-#include "RealtimeViewer.h"
-#include "RecorderViewer.h"
+#include "RealtimeUI.h"
+#include "RecorderUI.h"
 
 using cv::Mat;
 
@@ -51,11 +51,11 @@ void MainWindow::setInterface(QWidget* interface) {
 }
 
 void MainWindow::handleRealtimeButton() {
-    auto* realtimeViewer = new RealtimeViewer();
+    auto* realtimeViewer = new RealtimeUI();
     setInterface(realtimeViewer);
 }
 
 void MainWindow::handleRecordButton() {
-    auto* recorderViewer = new RecorderViewer();
+    auto* recorderViewer = new RecorderUI();
     setInterface(recorderViewer);
 }

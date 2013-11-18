@@ -1,10 +1,10 @@
-#include "RecorderViewer.h"
+#include "RecorderUI.h"
 
 #include <QVBoxLayout>
 
-RecorderViewer::RecorderViewer(QWidget *parent)
+RecorderUI::RecorderUI(QWidget *parent)
     : QWidget(parent),
-    _toggleButton(new QPushButton("Record")),
+    _toggleButton(new QPushButton("Record", this)),
     _fileNameEditor(new QLineEdit(this)),
     _recording(false)
 {
@@ -14,11 +14,10 @@ RecorderViewer::RecorderViewer(QWidget *parent)
     layout->addWidget(_toggleButton);
 }
 
-RecorderViewer::~RecorderViewer() {
-
+RecorderUI::~RecorderUI() {
 }
 
-void RecorderViewer::handleToggleButton() {
+void RecorderUI::handleToggleButton() {
     QString fileName = _fileNameEditor->text();
     if (fileName.isEmpty()) {
         fileName = "output.avi";

@@ -1,11 +1,11 @@
-#include "RealtimeViewer.h"
+#include "RealtimeUI.h"
 
 #include <QLayout>
 #include "Frame.h"
 
 using cv::Mat;
 
-RealtimeViewer::RealtimeViewer(QWidget *parent)
+RealtimeUI::RealtimeUI(QWidget *parent)
     : CameraUI(parent),
     _toggleButton(new QPushButton("Stop", this)),
     _analyze(new QCheckBox("Analyze", this)),
@@ -27,10 +27,10 @@ RealtimeViewer::RealtimeViewer(QWidget *parent)
     startCamera();
 }
 
-RealtimeViewer::~RealtimeViewer() {
+RealtimeUI::~RealtimeUI() {
 }
 
-void RealtimeViewer::updateDisplay() {
+void RealtimeUI::updateDisplay() {
     if (!_capturing) {
         return;
     }
@@ -38,7 +38,7 @@ void RealtimeViewer::updateDisplay() {
     _view->setMat(f);
 }
 
-void RealtimeViewer::handleToggleButton() {
+void RealtimeUI::handleToggleButton() {
     if (_capturing) {
         _toggleButton->setText("Start");
         stopCamera();
@@ -48,7 +48,7 @@ void RealtimeViewer::handleToggleButton() {
     }
 }
 
-Mat RealtimeViewer::analyzeFrame(Mat& inp) {
+Mat RealtimeUI::analyzeFrame(Mat& inp) {
     static CornerDetector cd;
     Mat out;
     Frame f(inp);
@@ -57,11 +57,11 @@ Mat RealtimeViewer::analyzeFrame(Mat& inp) {
     return out;
 }
 
-void RealtimeViewer::afterStart() {
+void RealtimeUI::afterStart() {
     _cam->addFilter(analyzeFrame);
     _timer->start(0);
 }
 
-void RealtimeViewer::afterStop() {
+void RealtimeUI::afterStop() {
     _timer->stop();
 }
