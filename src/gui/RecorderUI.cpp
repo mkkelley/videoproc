@@ -3,7 +3,7 @@
 #include <QVBoxLayout>
 
 RecorderUI::RecorderUI(QWidget *parent)
-    : QWidget(parent),
+    : CameraUI(parent),
     _toggleButton(new QPushButton("Record", this)),
     _fileNameEditor(new QLineEdit(this)),
     _recording(false)
@@ -23,4 +23,5 @@ void RecorderUI::handleToggleButton() {
         fileName = "output.avi";
         _fileNameEditor->setText(fileName);
     }
+    startCamera();
 }
