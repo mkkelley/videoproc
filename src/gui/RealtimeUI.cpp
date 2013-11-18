@@ -31,7 +31,7 @@ RealtimeUI::~RealtimeUI() {
 }
 
 void RealtimeUI::updateDisplay() {
-    if (!_capturing) {
+    if (!isCapturing()) {
         return;
     }
     Mat f = _analyze->isChecked() ? _cam->getNextFrame() : _cam->getNextRawFrame();
@@ -39,7 +39,7 @@ void RealtimeUI::updateDisplay() {
 }
 
 void RealtimeUI::handleToggleButton() {
-    if (_capturing) {
+    if (isCapturing()) {
         _toggleButton->setText("Start");
         stopCamera();
     } else {

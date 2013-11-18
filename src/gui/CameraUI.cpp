@@ -2,8 +2,7 @@
 
 CameraUI::CameraUI(QWidget* parent)
     : QWidget(parent),
-    _cam(nullptr),
-    _capturing(false)
+    _cam(nullptr)
 {
 }
 
@@ -12,20 +11,18 @@ CameraUI::~CameraUI() {
 }
 
 void CameraUI::startCamera() {
-    if (_capturing) {
+    if (isCapturing()) {
         return;
     }
     _cam = new Camera(0);
-    _capturing = true;
     afterStart();
 }
 
 void CameraUI::stopCamera() {
-    if (!_capturing) {
+    if (!isCapturing()) {
         return;
     }
     delete _cam;
     _cam = nullptr;
-    _capturing = false;
     afterStop();
 }
