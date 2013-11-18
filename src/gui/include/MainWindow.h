@@ -14,6 +14,8 @@ class MainWindow : public QMainWindow {
         void handleRecordButton();
         void resetMainWindow();
     private:
+        void setInterface(QWidget* interface);
+
         QWidget* _mainMenu;
         QPushButton* _realtimeButton;
         QPushButton* _recordButton;
