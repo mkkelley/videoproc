@@ -9,6 +9,8 @@ RecorderUI::RecorderUI(QWidget *parent)
     _timer(this),
     _stitcher(nullptr)
 {
+    _fileNameEditor->setPlaceholderText("output.avi");
+
     QVBoxLayout* layout = new QVBoxLayout(this);
     setLayout(layout);
     layout->addWidget(_fileNameEditor);
@@ -30,13 +32,12 @@ void RecorderUI::handleToggleButton() {
         return; //EXIT
     }
 
-    QString fileName = _fileNameEditor->text();
-    if (fileName.isEmpty()) {
-        fileName = "output.avi";
-        _fileNameEditor->setText(fileName);
+    if (_fileNameEditor->text().isEmpty()) {
+        _fileNameEditor->setText(_fileNameEditor->placeholderText());
     }
+    QString fileName = _fileNameEditor->text();
+
     startCamera();
-    _cam->getFps();
     _stitcher = new VideoStitcher(fileName.toStdString(), _cam->getFps());
     _timer.start(1);
 }
