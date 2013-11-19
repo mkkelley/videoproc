@@ -29,6 +29,7 @@ void RecorderUI::handleToggleButton() {
         _timer.stop();
         delete _stitcher;
         stopCamera();
+        _toggleButton->setText("Record");
         return; //EXIT
     }
 
@@ -40,6 +41,7 @@ void RecorderUI::handleToggleButton() {
     startCamera();
     _stitcher = new VideoStitcher(fileName.toStdString(), _cam->getFps());
     _timer.start(1);
+    _toggleButton->setText("Stop");
 }
 
 void RecorderUI::recordNextFrame() {
