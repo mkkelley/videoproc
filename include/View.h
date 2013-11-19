@@ -14,6 +14,7 @@ class View {
 
         cv::Mat getNextFrame();
         void addFilter(std::function<cv::Mat(cv::Mat&)>);
+        void clearFilters();
     private:
         std::vector<std::function<cv::Mat(cv::Mat&)>> _filters;
 };

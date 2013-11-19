@@ -15,3 +15,7 @@ Mat View::getNextFrame() {
 void View::addFilter(function<Mat(Mat&)> filter) {
     _filters.push_back(filter);
 }
+
+void View::clearFilters() {
+    _filters.clear();
+}
