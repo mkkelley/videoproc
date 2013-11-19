@@ -25,7 +25,7 @@ bool VideoStitcher::openOut(Size s) {
     return success;
 }
 
-bool VideoStitcher::appendImage(Mat& image) {
+bool VideoStitcher::appendImage(const Mat& image) {
     if (!openOut(image.size())) {
         return false;
     }

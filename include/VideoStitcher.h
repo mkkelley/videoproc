@@ -9,7 +9,7 @@ class VideoStitcher {
                 double fps,
                 int codec = CV_FOURCC('M','J','P','G')
                 );
-        bool appendImage(cv::Mat& image);
+        bool appendImage(const cv::Mat& image);
         bool appendImage(const std::string fileName);
     private:
         bool openOut(cv::Size s);
