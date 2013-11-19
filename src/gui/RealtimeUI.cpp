@@ -48,17 +48,8 @@ void RealtimeUI::handleToggleButton() {
     }
 }
 
-Mat RealtimeUI::analyzeFrame(Mat& inp) {
-    static CornerDetector cd;
-    Mat out;
-    Frame f(inp);
-    f.calculate(cd);
-    cv::drawKeypoints(inp, f.getKeyPoints(), out);
-    return out;
-}
-
 void RealtimeUI::afterStart() {
-    _cam->addFilter(analyzeFrame);
+    _cam->addFilter(vp::analyzeFrame);
     _timer->start(0);
 }
 

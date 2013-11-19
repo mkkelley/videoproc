@@ -1,5 +1,10 @@
 #include "CameraUI.h"
 
+#include "CornerDetector.h"
+#include "Frame.h"
+
+using cv::Mat;
+
 CameraUI::CameraUI(QWidget* parent)
     : QWidget(parent),
     _cam(nullptr)
@@ -25,4 +30,13 @@ void CameraUI::stopCamera() {
     delete _cam;
     _cam = nullptr;
     afterStop();
+}
+
+Mat vp::analyzeFrame(Mat& inp) {
+    static CornerDetector cd;
+    Mat out;
+    Frame f(inp);
+    f.calculate(cd);
+    cv::drawKeypoints(inp, f.getKeyPoints(), out);
+    return out;
 }

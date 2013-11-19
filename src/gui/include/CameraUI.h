@@ -30,3 +30,7 @@ class CameraUI : public QWidget {
 
         Camera* _cam;
 };
+
+namespace vp {
+    cv::Mat analyzeFrame(cv::Mat&);
+};

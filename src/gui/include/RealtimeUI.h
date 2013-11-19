@@ -22,6 +22,4 @@ class RealtimeUI : public CameraUI {
         QCheckBox* _analyze;
         MatView* _view;
         QTimer* _timer;
-
-        static cv::Mat analyzeFrame(cv::Mat&);
 };
