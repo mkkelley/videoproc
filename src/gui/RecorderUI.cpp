@@ -7,6 +7,7 @@ RecorderUI::RecorderUI(QWidget *parent)
     _toggleButton(new QPushButton("Record", this)),
     _fileNameEditor(new QLineEdit(this)),
     _timer(this),
+    _analyze("Analyze", this),
     _stitcher(nullptr)
 {
     _fileNameEditor->setPlaceholderText("output.avi");
@@ -14,6 +15,7 @@ RecorderUI::RecorderUI(QWidget *parent)
     QVBoxLayout* layout = new QVBoxLayout(this);
     setLayout(layout);
     layout->addWidget(_fileNameEditor);
+    layout->addWidget(&_analyze);
     layout->addWidget(_toggleButton);
 
     connect(_toggleButton, SIGNAL(released()),

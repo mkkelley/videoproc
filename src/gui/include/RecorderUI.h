@@ -1,9 +1,10 @@
 #pragma once
 
-#include <QWidget>
+#include <QCheckBox>
 #include <QLineEdit>
 #include <QPushButton>
 #include <QTimer>
+#include <QWidget>
 #include "CameraUI.h"
 #include "VideoStitcher.h"
 
@@ -19,6 +20,7 @@ class RecorderUI : public CameraUI {
         QPushButton* _toggleButton;
         QLineEdit* _fileNameEditor;
         QTimer _timer;
+        QCheckBox _analyze;
 
         VideoStitcher* _stitcher;
 };
