@@ -41,6 +41,7 @@ void RecorderUI::handleToggleButton() {
     QString fileName = _fileNameEditor->text();
 
     startCamera();
+    _cam->addFilter(vp::analyzeFrame);
     _stitcher = new VideoStitcher(fileName.toStdString(), _cam->getFps());
     _timer.start(1);
     _toggleButton->setText("Stop");
@@ -50,5 +51,9 @@ void RecorderUI::recordNextFrame() {
     if (_stitcher == nullptr) {
         return;
     }
-    _stitcher->appendImage(_cam->getNextFrame());
+    _stitcher->appendImage(
+            _analyze.isChecked() ?
+                _cam->getNextFrame() :
+                _cam->getNextRawFrame()
+    );
 }
