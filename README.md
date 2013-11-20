@@ -7,5 +7,6 @@ currently does is calculation and display of keypoint information.
 
 Dependencies
 ------------
++ CMake
 + QT4
 + OpenCV2
