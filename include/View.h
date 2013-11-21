@@ -10,7 +10,7 @@ class View {
         virtual double getFps() = 0;
         virtual cv::Mat getNextRawFrame() = 0;
         virtual std::vector<cv::Mat> captureVideo(int frames) = 0;
-        virtual ~View() {};
+        virtual ~View() = default;
 
         cv::Mat getNextFrame();
         void addFilter(std::function<cv::Mat(cv::Mat&)>);
