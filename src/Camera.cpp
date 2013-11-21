@@ -14,10 +14,6 @@ Camera::Camera(int which) : _cap(which), _fps(-1) {
     _cap.set(CV_CAP_PROP_FRAME_HEIGHT, 720);
 }
 
-Camera::~Camera() {
-
-}
-
 double Camera::getFps() {
     if (_fps != -1) {
         return _fps;

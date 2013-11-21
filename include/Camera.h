@@ -15,7 +15,7 @@ class Camera : public View {
         std::vector<cv::Mat> captureVideo(int frames) override;
         Camera();
         Camera(int which);
-        virtual ~Camera();
+        virtual ~Camera() = default;
 
     protected:
         cv::VideoCapture _cap;
