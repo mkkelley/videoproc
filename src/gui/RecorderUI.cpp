@@ -23,9 +23,6 @@ RecorderUI::RecorderUI(QWidget *parent)
     connect(&_timer, SIGNAL(timeout()), this, SLOT(recordNextFrame()));
 }
 
-RecorderUI::~RecorderUI() {
-}
-
 void RecorderUI::handleToggleButton() {
     if (isCapturing()) {
         _timer.stop();

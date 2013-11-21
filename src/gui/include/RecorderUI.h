@@ -12,7 +12,7 @@ class RecorderUI : public CameraUI {
     Q_OBJECT;
     public:
         RecorderUI(QWidget* parent = nullptr);
-        ~RecorderUI();
+        ~RecorderUI() = default;
     private slots:
         void handleToggleButton();
         void recordNextFrame();

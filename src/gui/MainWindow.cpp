@@ -15,9 +15,6 @@ MainWindow::MainWindow(QWidget* parent)
     resetMainWindow();
 }
 
-MainWindow::~MainWindow() {
-}
-
 void MainWindow::resetMainWindow() {
     _mainMenu = new QWidget(this);
     _realtimeButton = new QPushButton("Realtime", _mainMenu);

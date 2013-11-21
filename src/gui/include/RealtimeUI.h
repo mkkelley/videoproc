@@ -11,7 +11,7 @@ class RealtimeUI : public CameraUI {
     Q_OBJECT;
     public:
         RealtimeUI(QWidget *parent = nullptr);
-        ~RealtimeUI();
+        ~RealtimeUI() = default;
     private slots:
         void handleToggleButton();
         void updateDisplay();

@@ -27,9 +27,6 @@ RealtimeUI::RealtimeUI(QWidget *parent)
     startCamera();
 }
 
-RealtimeUI::~RealtimeUI() {
-}
-
 void RealtimeUI::updateDisplay() {
     if (!isCapturing()) {
         return;
