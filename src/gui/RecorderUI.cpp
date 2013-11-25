@@ -1,5 +1,6 @@
 #include "RecorderUI.h"
 
+#include <QtCore>
 #include <QVBoxLayout>
 
 RecorderUI::RecorderUI(QWidget *parent)
@@ -23,11 +24,27 @@ RecorderUI::RecorderUI(QWidget *parent)
     connect(&_timer, SIGNAL(timeout()), this, SLOT(recordNextFrame()));
 }
 
+void RecorderUI::startRecording() {
+    QString fileName = _fileNameEditor->text();
+    startCamera();
+    _cam->addFilter(vp::analyzeFrame);
+    _stitcher = new VideoStitcher(fileName.toStdString(), _cam->getFps());
+    _timer.start(1);
+}
+
+void RecorderUI::stopRecording() {
+    _timer.stop();
+    delete _stitcher;
+    stopCamera();
+}
+
+bool RecorderUI::isRecording() const {
+    return _timer.isActive();
+}
+
 void RecorderUI::handleToggleButton() {
-    if (isCapturing()) {
-        _timer.stop();
-        delete _stitcher;
-        stopCamera();
+    if (isRecording()) {
+        stopRecording();
         _toggleButton->setText("Record");
         return; //EXIT
     }
@@ -36,11 +53,8 @@ void RecorderUI::handleToggleButton() {
         _fileNameEditor->setText(_fileNameEditor->placeholderText());
     }
     QString fileName = _fileNameEditor->text();
+    QtConcurrent::run(std::bind(&RecorderUI::startRecording, this));
 
-    startCamera();
-    _cam->addFilter(vp::analyzeFrame);
-    _stitcher = new VideoStitcher(fileName.toStdString(), _cam->getFps());
-    _timer.start(1);
     _toggleButton->setText("Stop");
 }
 

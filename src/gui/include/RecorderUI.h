@@ -17,6 +17,10 @@ class RecorderUI : public CameraUI {
         void handleToggleButton();
         void recordNextFrame();
     private:
+        void startRecording();
+        void stopRecording();
+        bool isRecording() const;
+
         QPushButton* _toggleButton;
         QLineEdit* _fileNameEditor;
         QTimer _timer;
