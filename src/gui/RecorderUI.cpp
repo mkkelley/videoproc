@@ -1,5 +1,6 @@
 #include "RecorderUI.h"
 
+#include <unistd.h>
 #include <QtCore>
 #include <QVBoxLayout>
 
@@ -42,11 +43,25 @@ bool RecorderUI::isRecording() const {
     return _timer.isActive();
 }
 
+void RecorderUI::asyncStop() {
+    while (!isRecording() && isCapturing()) {
+        usleep(500);
+    }
+    stopRecording();
+    _toggleButton->setText("Record");
+    _toggleButton->setDown(false);
+}
+
 void RecorderUI::handleToggleButton() {
     if (isRecording()) {
         stopRecording();
         _toggleButton->setText("Record");
         return; //EXIT
+    } else if (isCapturing()) {
+        _toggleButton->setText("Please Wait");
+        _toggleButton->setDown(true);
+        QtConcurrent::run(std::bind(&RecorderUI::asyncStop, this));
+        return;
     }
 
     if (_fileNameEditor->text().isEmpty()) {

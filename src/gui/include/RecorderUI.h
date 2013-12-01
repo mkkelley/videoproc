@@ -20,6 +20,7 @@ class RecorderUI : public CameraUI {
         void startRecording();
         void stopRecording();
         bool isRecording() const;
+        void asyncStop();
 
         QPushButton* _toggleButton;
         QLineEdit* _fileNameEditor;
