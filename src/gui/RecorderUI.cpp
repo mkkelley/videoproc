@@ -6,27 +6,28 @@
 
 RecorderUI::RecorderUI(QWidget *parent)
     : CameraUI(parent),
-    _toggleButton(new QPushButton("Record", this)),
-    _fileNameEditor(new QLineEdit(this)),
+    _toggleButton("Record", this),
+    _fileNameEditor(this),
     _timer(this),
     _analyze("Analyze", this),
     _stitcher(nullptr)
 {
-    _fileNameEditor->setPlaceholderText("output.avi");
+    _fileNameEditor.setPlaceholderText("output.avi");
 
     QVBoxLayout* layout = new QVBoxLayout(this);
     setLayout(layout);
-    layout->addWidget(_fileNameEditor);
+    layout->addWidget(&_fileNameEditor);
     layout->addWidget(&_analyze);
-    layout->addWidget(_toggleButton);
+    layout->addWidget(&_toggleButton);
 
-    connect(_toggleButton, SIGNAL(released()),
+    connect(&_toggleButton, SIGNAL(released()),
             this, SLOT(handleToggleButton()));
-    connect(&_timer, SIGNAL(timeout()), this, SLOT(recordNextFrame()));
+    connect(&_timer, SIGNAL(timeout()),
+            this, SLOT(recordNextFrame()));
 }
 
 void RecorderUI::startRecording() {
-    QString fileName = _fileNameEditor->text();
+    QString fileName = _fileNameEditor.text();
     startCamera();
     _cam->addFilter(vp::analyzeFrame);
     _stitcher = new VideoStitcher(fileName.toStdString(), _cam->getFps());
@@ -48,29 +49,29 @@ void RecorderUI::asyncStop() {
         usleep(500);
     }
     stopRecording();
-    _toggleButton->setText("Record");
-    _toggleButton->setDown(false);
+    _toggleButton.setText("Record");
+    _toggleButton.setDown(false);
 }
 
 void RecorderUI::handleToggleButton() {
     if (isRecording()) {
         stopRecording();
-        _toggleButton->setText("Record");
+        _toggleButton.setText("Record");
         return; //EXIT
     } else if (isCapturing()) {
-        _toggleButton->setText("Please Wait");
-        _toggleButton->setDown(true);
+        _toggleButton.setText("Please Wait");
+        _toggleButton.setDown(true);
         QtConcurrent::run(std::bind(&RecorderUI::asyncStop, this));
         return;
     }
 
-    if (_fileNameEditor->text().isEmpty()) {
-        _fileNameEditor->setText(_fileNameEditor->placeholderText());
+    if (_fileNameEditor.text().isEmpty()) {
+        _fileNameEditor.setText(_fileNameEditor.placeholderText());
     }
-    QString fileName = _fileNameEditor->text();
+    QString fileName = _fileNameEditor.text();
     QtConcurrent::run(std::bind(&RecorderUI::startRecording, this));
 
-    _toggleButton->setText("Stop");
+    _toggleButton.setText("Stop");
 }
 
 void RecorderUI::recordNextFrame() {
