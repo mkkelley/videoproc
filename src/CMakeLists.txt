@@ -14,3 +14,6 @@ add_library ( videoproc
     )
 add_executable( videocap main.cpp )
 target_link_libraries( videocap videoproc ${OpenCV_LIBS} )
+
+add_subdirectory( gui )
+add_subdirectory( parallel )
