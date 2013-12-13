@@ -4,8 +4,8 @@
 #include <condition_variable>
 #include <functional>
 #include <list>
+#include <queue>
 
-#include "FQueue.h"
 #include "WorkerThread.h"
 
 class ThreadPool {
