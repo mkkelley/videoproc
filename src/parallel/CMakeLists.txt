@@ -1,8 +1,8 @@
 include_directories ( ../../include)
 
 set( PARALLEL_SOURCES
-    PRunner.cpp
     ThreadPool.cpp
+    FQueue.h
     )
 add_library( parallel
     ${PARALLEL_SOURCES}

@@ -5,27 +5,38 @@
 
 class FQueue {
     public:
+
+        FQueue()
+            : _functionQueue()
+        {
+        }
+
         template <class F>
         void push(F&& f) {
             _functionQueue.push(f);
         }
         
-        std::function<void()> front_pop() {
-            std::function<void()> f = _functionQueue.front();
+        void pop() {
+            if (_functionQueue.empty()) {
+                throw std::logic_error("Pop called on empty FQueue.");
+            }
             _functionQueue.pop();
-            return f;
         }
 
-        void pop() {
-            _functionQueue.pop();
+        bool empty() const {
+            return _functionQueue.empty();
         }
 
         std::function<void()> front() const {
-            return _functionQueue.front();
+            return std::move(_functionQueue.front());
         }
 
         std::function<void()> back() const {
-            return _functionQueue.back();
+            return std::move(_functionQueue.back());
+        }
+
+        unsigned int size() const {
+            return _functionQueue.size();
         }
     private:
         std::queue<std::function<void()>> _functionQueue;
