@@ -3,6 +3,7 @@
 #include <atomic>
 #include <condition_variable>
 #include <functional>
+#include <list>
 #include <thread>
 #include <vector>
 
@@ -25,6 +26,7 @@ class ThreadPool {
         bool executeNextTask() volatile;
         void wait(size_t const threshold) const volatile;
         void destructWorker(std::shared_ptr<worker_type>) volatile;
+        void terminateAllWorkers() volatile;
     private:
         void cleanup();
 
@@ -36,5 +38,6 @@ class ThreadPool {
         FQueue _queue;
         mutable std::condition_variable _task_or_terminated_event;
         mutable std::condition_variable _idle_or_terminated_event;
-        std::atomic<bool> _stopped;
+        std::atomic<bool> _terminate_all_workers;
+        std::list<std::shared_ptr<worker_type>> _terminated_workers;
 };
