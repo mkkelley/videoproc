@@ -43,12 +43,6 @@ bool ThreadPool::execute_next_task() {
     return true;
 }
 
-/**
- * Block until the combined number of active tasks and queued tasks goes below
- * the threshold value.
- * @param threshold The maximum number of active and inactive tasks at which
- * the function will return.
- */
 void ThreadPool::wait(size_t const threshold) const {
     unique_lock<mutex> lock(_queue_lock);
     if (0 == threshold) {
@@ -62,10 +56,6 @@ void ThreadPool::wait(size_t const threshold) const {
     }
 }
 
-/**
- * Terminate all workers after each finishes the task on which it is working.
- * Does not clear the queue.
- */
 void ThreadPool::terminate_all_workers() {
     unique_lock<mutex> lock(_queue_lock);
 

@@ -19,12 +19,32 @@ class ThreadPool {
             _queue.push(std::move(f));
             _task_or_terminated_event.notify_one();
         }
+
+        /**
+         * Block until the combined number of active tasks and queued tasks goes below
+         * the threshold value.
+         * @param threshold The maximum number of active and inactive tasks at which
+         * the function will return.
+         */
         void wait(size_t const threshold) const;
+
+        /**
+         * Terminate all workers after each finishes the task on which it is working.
+         * Does not clear the queue.
+         */
         void terminate_all_workers();
 
     private:
         friend class WorkerThread<ThreadPool>;
-        //these functions meant to be called by WorkerThread
+        /**
+         * This function executes the next task in the queue, or blocks until
+         * a new task is added or a termination is called. There is no evident
+         * reason for anything besides WorkerThread::run to call this function.
+         *
+         * Exception safety: basic
+         *
+         * @return False if the thread is terminated, true otherwise.
+         */
         bool execute_next_task();
         void destruct_worker(std::shared_ptr<worker_type>);
 
