@@ -14,18 +14,18 @@ class WorkerThread : public std::enable_shared_from_this<WorkerThread<Pool>> {
         }
 
         void run() {
-            while (_pool->executeNextTask()) {
+            while (_pool->execute_next_task()) {
 
             }
 
-            _pool->destructWorker(this->shared_from_this());
+            _pool->destruct_worker(this->shared_from_this());
         }
 
         void join() {
             _thread->join();
         }
 
-        static void createAndAttach(const std::shared_ptr<Pool>& p) {
+        static void create_and_attach(const std::shared_ptr<Pool>& p) {
             std::shared_ptr<WorkerThread> worker(new WorkerThread(p));
             worker->_thread = std::make_shared<std::thread>(
                 std::thread(std::bind(&WorkerThread::run, worker))
