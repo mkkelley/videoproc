@@ -9,4 +9,4 @@ Dependencies
 ------------
 + CMake
 + QT4
-+ OpenCV2
++ OpenCV2 (with V4L1/2, ffmpeg at least)
