@@ -4,7 +4,6 @@
 #include <thread>
 
 #include "ThreadPool.h"
-#include "Debug.h"
 
 template <class Pool>
 class WorkerThread : public std::enable_shared_from_this<WorkerThread<Pool>> {
@@ -12,14 +11,13 @@ class WorkerThread : public std::enable_shared_from_this<WorkerThread<Pool>> {
         WorkerThread(std::shared_ptr<Pool> pool) :
             _pool(pool)
         {
-            cout << "WorkerThread()" << endl;
         }
 
         void run() {
             while (_pool->executeNextTask()) {
 
             }
-            cout << "dw" << endl;
+
             _pool->destructWorker(this->shared_from_this());
         }
 

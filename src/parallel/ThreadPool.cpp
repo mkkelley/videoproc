@@ -1,8 +1,5 @@
 #include "ThreadPool.h"
 
-#include <unistd.h>
-#include "Debug.h"
-
 using std::function;
 using std::thread;
 

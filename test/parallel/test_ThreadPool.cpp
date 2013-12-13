@@ -1,4 +1,5 @@
 #include "ThreadPool.h"
+
 #include <functional>
 #include <iostream>
 #include <unistd.h>
@@ -18,9 +19,10 @@ void test_func_g() {
 int main() {
     ThreadPool tp(4);
     std::function<void()> f(test_func_c);
+
     tp.submit(test_func_g);
-    std::cout << "gothere" <<std::endl;
     tp.submit(test_func_c);
+
     for (int i = 0; i < 10; i++) {
         std::cout << "test" << std::endl;
     }
