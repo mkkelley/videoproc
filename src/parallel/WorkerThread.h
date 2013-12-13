@@ -8,12 +8,20 @@
 template <class Pool>
 class WorkerThread : public std::enable_shared_from_this<WorkerThread<Pool>> {
     public:
-        WorkerThread(std::shared_ptr<Pool> pool) :
+        /**
+         * Construct a WorkerThread with a pointer to the pool on which it
+         * will work.
+         */
+        WorkerThread(const std::shared_ptr<Pool>& pool) :
             _pool(pool),
             _thread(nullptr)
         {
         }
 
+        /**
+         * Execute tasks from the associated thread pool. Notify pool of
+         * destruction when _pool#execute_next_task() return false.
+         */
         void run() {
             while (_pool->execute_next_task()) {
 
@@ -22,10 +30,18 @@ class WorkerThread : public std::enable_shared_from_this<WorkerThread<Pool>> {
             _pool->destruct_worker(this->shared_from_this());
         }
 
+        /**
+         * Join the current thread, blocking until WorkerThread::run()
+         * returns.
+         */
         void join() {
             _thread->join();
         }
 
+        /**
+         * Construct a WorkerThread with a pointerr to a thread pool, and start
+         * execution of tasks from the pool.
+         */
         static void create_and_attach(const std::shared_ptr<Pool>& p) {
             std::shared_ptr<WorkerThread> worker(new WorkerThread(p));
             worker->_thread = std::make_shared<std::thread>(
