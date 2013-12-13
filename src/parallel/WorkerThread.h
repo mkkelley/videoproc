@@ -9,7 +9,8 @@ template <class Pool>
 class WorkerThread : public std::enable_shared_from_this<WorkerThread<Pool>> {
     public:
         WorkerThread(std::shared_ptr<Pool> pool) :
-            _pool(pool)
+            _pool(pool),
+            _thread(nullptr)
         {
         }
 

@@ -17,69 +17,75 @@ ThreadPool::ThreadPool(size_t threads)
     }
 }
 
-bool ThreadPool::execute_next_task() volatile {
+bool ThreadPool::execute_next_task() {
     function<void()> fn;
 
-    {
-        ThreadPool* self = const_cast<ThreadPool*>(this);
-        unique_lock<mutex> lock(self->_queue_lock);
-        if (self->_terminate_all_workers) {
+    { //enter scope to release lock before function is executed
+        unique_lock<mutex> lock(_queue_lock);
+        if (_terminate_all_workers) {
             return false;
         }
-        while (self->_queue.empty()) {
-            if (self->_terminate_all_workers) {
+        while (_queue.empty()) {
+            if (_terminate_all_workers) {
                 return false;
             }
-            --self->_threads_running;
-            self->_idle_or_terminated_event.notify_all();
-            self->_task_or_terminated_event.wait(lock);
-            ++self->_threads_running;
+            --_threads_running;
+            _idle_or_terminated_event.notify_all();
+            _task_or_terminated_event.wait(lock);
+            ++_threads_running;
         }
 
-        fn = self->_queue.front();
-        self->_queue.pop();
+        fn = _queue.front();
+        _queue.pop();
     }
     fn();
 
     return true;
 }
 
-void ThreadPool::wait(size_t const threshold) volatile const {
-    ThreadPool* self = const_cast<ThreadPool*>(this);
-    unique_lock<mutex> lock(self->_queue_lock);
+/**
+ * Block until the combined number of active tasks and queued tasks goes below
+ * the threshold value.
+ * @param threshold The maximum number of active and inactive tasks at which
+ * the function will return.
+ */
+void ThreadPool::wait(size_t const threshold) const {
+    unique_lock<mutex> lock(_queue_lock);
     if (0 == threshold) {
-        while (0 != self->_threads_running || !self->_queue.empty()) {
-            self->_idle_or_terminated_event.wait(lock);
+        while (0 != _threads_running || !_queue.empty()) {
+            _idle_or_terminated_event.wait(lock);
         }
     } else {
-        while (self->_queue.size() + self->_threads_running > threshold) {
-            self->_idle_or_terminated_event.wait(lock);
+        while (_queue.size() + _threads_running > threshold) {
+            _idle_or_terminated_event.wait(lock);
         }
     }
 }
 
-void ThreadPool::terminate_all_workers() volatile {
-    ThreadPool* self = const_cast<ThreadPool*>(this);
-    unique_lock<mutex> lock(self->_queue_lock);
+/**
+ * Terminate all workers after each finishes the task on which it is working.
+ * Does not clear the queue.
+ */
+void ThreadPool::terminate_all_workers() {
+    unique_lock<mutex> lock(_queue_lock);
 
-    self->_terminate_all_workers = true;
-    self->_task_or_terminated_event.notify_all();
+    _terminate_all_workers = true;
+    _task_or_terminated_event.notify_all();
 
     while (_threads_running > 0) {
-        self->_idle_or_terminated_event.wait(lock);
+        _idle_or_terminated_event.wait(lock);
     }
 
-    for (auto& worker : self->_terminated_workers) {
+    for (auto& worker : _terminated_workers) {
         worker->join();
     }
 
-    self->_terminated_workers.clear();
+    _terminated_workers.clear();
 }
 
-void ThreadPool::destruct_worker(shared_ptr<worker_type> worker) volatile {
-    ThreadPool* self = const_cast<ThreadPool*>(this);
-    unique_lock<mutex> lock(self->_queue_lock);
+void ThreadPool::destruct_worker(shared_ptr<worker_type> worker) {
+    unique_lock<mutex> lock(_queue_lock);
     --_threads_running;
-    self->_idle_or_terminated_event.notify_all();
-    self->_terminated_workers.push_back(worker);
+    _idle_or_terminated_event.notify_all();
+    _terminated_workers.push_back(worker);
 }

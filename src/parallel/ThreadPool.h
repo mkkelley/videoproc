@@ -14,24 +14,26 @@ class ThreadPool {
         ThreadPool(size_t threads = 1);
 
         template<class F>
-        void submit(F&& f) volatile {
-            ThreadPool* self = const_cast<ThreadPool*>(this);
-            std::lock_guard<std::mutex> lock(self->_queue_lock);
-            self->_queue.push(std::move(f));
-            self->_task_or_terminated_event.notify_one();
+        void submit(F&& f) {
+            std::lock_guard<std::mutex> lock(_queue_lock);
+            _queue.push(std::move(f));
+            _task_or_terminated_event.notify_one();
         }
-        bool execute_next_task() volatile;
-        void wait(size_t const threshold) const volatile;
-        void destruct_worker(std::shared_ptr<worker_type>) volatile;
-        void terminate_all_workers() volatile;
-    private:
-        void cleanup();
+        void wait(size_t const threshold) const;
+        void terminate_all_workers();
 
-        volatile unsigned const int _num_threads;
-        volatile std::atomic<unsigned int> _threads_running;
+    private:
+        friend class WorkerThread<ThreadPool>;
+        //these functions meant to be called by WorkerThread
+        bool execute_next_task();
+        void destruct_worker(std::shared_ptr<worker_type>);
+
+        unsigned const int _num_threads;
+        //can be accessed and changed by multiple simultaneous threads
+        std::atomic<unsigned int> _threads_running;
 
         mutable std::mutex _queue_lock;
-        FQueue _queue;
+        std::queue<std::function<void()>> _queue;
 
         mutable std::condition_variable _task_or_terminated_event;
         mutable std::condition_variable _idle_or_terminated_event;
