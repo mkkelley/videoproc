@@ -8,7 +8,7 @@
 #include "CameraUI.h"
 #include "VideoStitcher.h"
 
-class RecorderUI : public CameraUI {
+class RecorderUI : public QWidget {
     Q_OBJECT;
     public:
         RecorderUI(QWidget* parent = nullptr);
@@ -28,4 +28,5 @@ class RecorderUI : public CameraUI {
         QCheckBox _analyze;
 
         VideoStitcher* _stitcher;
+        CameraUI _cam;
 };

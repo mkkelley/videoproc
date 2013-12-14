@@ -5,12 +5,13 @@
 #include <QVBoxLayout>
 
 RecorderUI::RecorderUI(QWidget *parent)
-    : CameraUI(parent),
+    : QWidget(parent),
     _toggleButton("Record", this),
     _fileNameEditor(this),
     _timer(this),
     _analyze("Analyze", this),
-    _stitcher(nullptr)
+    _stitcher(nullptr),
+    _cam()
 {
     _fileNameEditor.setPlaceholderText("output.avi");
 
@@ -20,6 +21,8 @@ RecorderUI::RecorderUI(QWidget *parent)
     layout->addWidget(&_analyze);
     layout->addWidget(&_toggleButton);
 
+    _cam.addFilter(vp::analyzeFrame);
+
     connect(&_toggleButton, SIGNAL(released()),
             this, SLOT(handleToggleButton()));
     connect(&_timer, SIGNAL(timeout()),
@@ -28,16 +31,15 @@ RecorderUI::RecorderUI(QWidget *parent)
 
 void RecorderUI::startRecording() {
     QString fileName = _fileNameEditor.text();
-    startCamera();
-    _cam->addFilter(vp::analyzeFrame);
-    _stitcher = new VideoStitcher(fileName.toStdString(), _cam->getFps());
+    _cam.startCamera();
+    _stitcher = new VideoStitcher(fileName.toStdString(), _cam.getFps());
     _timer.start(1);
 }
 
 void RecorderUI::stopRecording() {
     _timer.stop();
     delete _stitcher;
-    stopCamera();
+    _cam.stopCamera();
 }
 
 bool RecorderUI::isRecording() const {
@@ -45,7 +47,7 @@ bool RecorderUI::isRecording() const {
 }
 
 void RecorderUI::asyncStop() {
-    while (!isRecording() && isCapturing()) {
+    while (!isRecording() && _cam.isCapturing()) {
         usleep(500);
     }
     stopRecording();
@@ -58,7 +60,7 @@ void RecorderUI::handleToggleButton() {
         stopRecording();
         _toggleButton.setText("Record");
         return; //EXIT
-    } else if (isCapturing()) {
+    } else if (_cam.isCapturing()) {
         _toggleButton.setText("Please Wait");
         _toggleButton.setDown(true);
         QtConcurrent::run(std::bind(&RecorderUI::asyncStop, this));
@@ -80,7 +82,7 @@ void RecorderUI::recordNextFrame() {
     }
     _stitcher->appendImage(
             _analyze.isChecked() ?
-                _cam->getNextFrame() :
-                _cam->getNextRawFrame()
+                _cam.getNextFrame() :
+                _cam.getNextRawFrame()
     );
 }

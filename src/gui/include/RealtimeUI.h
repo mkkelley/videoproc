@@ -7,7 +7,7 @@
 #include "MatView.h"
 #include "CameraUI.h"
 
-class RealtimeUI : public CameraUI {
+class RealtimeUI : public QWidget {
     Q_OBJECT;
     public:
         RealtimeUI(QWidget *parent = nullptr);
@@ -15,11 +15,10 @@ class RealtimeUI : public CameraUI {
     private slots:
         void handleToggleButton();
         void updateDisplay();
-        void afterStart() override;
-        void afterStop() override;
     private:
         QPushButton* _toggleButton;
         QCheckBox* _analyze;
         MatView* _view;
         QTimer* _timer;
+        CameraUI _cam;
 };
