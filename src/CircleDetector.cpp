@@ -50,6 +50,7 @@ vector<RotatedRect> EllipseDetector::getEllipses(Mat img) const {
     for (vector<cv::Point> contour : contours) {
         if (contour.size() < 5) continue;
         RotatedRect r = cv::fitEllipse(contour);
+        if (r.size.area() < 10) continue;
         ellipses.push_back(r);
     }
     return ellipses;

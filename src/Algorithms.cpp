@@ -38,3 +38,19 @@ Mat vp::drawEllipses(const Mat& inp) {
     }
     return out;
 }
+
+Mat vp::drawContours(const Mat& inp) {
+    Mat blurred;
+    inp.copyTo(blurred);
+    cv::GaussianBlur(inp, blurred, cv::Size(9, 9), 2, 2);
+
+    Mat cannyEdges;
+    cv::Canny(blurred, cannyEdges, 80, 60);
+
+    vector<vector<cv::Point>> contours;
+    cv::findContours(cannyEdges, contours, cv::noArray(), CV_RETR_TREE, CV_CHAIN_APPROX_NONE);
+
+    Mat out = inp;
+    cv::drawContours(out, contours, -1, cv::Scalar(0, 255, 0));
+    return out;
+}

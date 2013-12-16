@@ -11,6 +11,7 @@ const map<string, AlgorithmSelector::transform_fn> AlgorithmSelector::_algorithm
     {"Keypoints", &vp::analyzeFrame},
     {"Circles", &vp::drawCircles},
     {"Ellipses", &vp::drawEllipses},
+    {"Contours", &vp::drawContours},
 };
 
 AlgorithmSelector::AlgorithmSelector(QWidget* parent)
