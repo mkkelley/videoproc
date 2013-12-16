@@ -44,8 +44,3 @@ class CameraUI : public View {
         std::function<void()> _afterStart;
         std::function<void()> _afterStop;
 };
-
-namespace vp {
-    cv::Mat analyzeFrame(const cv::Mat&);
-    cv::Mat drawCircles(const cv::Mat&);
-};

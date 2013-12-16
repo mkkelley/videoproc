@@ -1,5 +1,7 @@
 #include "AlgorithmSelector.h"
 
+#include "Algorithms.h"
+
 using std::map;
 using std::string;
 using std::vector;

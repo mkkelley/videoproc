@@ -1,5 +1,6 @@
 include_directories ( ../include )
 SET( SOURCES
+    Algorithms.cpp
     Camera.cpp
     Recorder.cpp
     Video.cpp

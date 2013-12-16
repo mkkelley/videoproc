@@ -4,6 +4,8 @@
 #include <QtCore>
 #include <QVBoxLayout>
 
+#include "Algorithms.h"
+
 RecorderUI::RecorderUI(QWidget *parent)
     : QWidget(parent),
     _toggleButton("Record", this),
