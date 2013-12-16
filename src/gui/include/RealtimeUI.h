@@ -1,7 +1,6 @@
 #pragma once
 
 #include <QCheckBox>
-#include <QComboBox>
 #include <QPushButton>
 #include <QTimer>
 

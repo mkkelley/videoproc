@@ -22,8 +22,8 @@ RealtimeUI::RealtimeUI(QWidget *parent)
     buttons->addWidget(&_algoSelect);
     buttons->addWidget(&_analyze);
 
-    layout->addLayout(buttons); //layout takes ownership of buttons, don't delete
-    setLayout(layout); //QWidget takes ownership of layout, don't delete
+    layout->addLayout(buttons);
+    setLayout(layout);
 
     _cam.afterStart([this](){_timer.start(0);});
     _cam.afterStop([this](){_timer.stop();});
