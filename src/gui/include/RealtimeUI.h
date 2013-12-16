@@ -1,11 +1,13 @@
 #pragma once
 
 #include <QCheckBox>
+#include <QComboBox>
 #include <QPushButton>
 #include <QTimer>
 
-#include "MatView.h"
+#include "AlgorithmSelector.h"
 #include "CameraUI.h"
+#include "MatView.h"
 
 class RealtimeUI : public QWidget {
     Q_OBJECT;
@@ -15,10 +17,12 @@ class RealtimeUI : public QWidget {
     private slots:
         void handleToggleButton();
         void updateDisplay();
+        void handleAnalyzeToggle();
     private:
-        QPushButton* _toggleButton;
-        QCheckBox* _analyze;
-        MatView* _view;
-        QTimer* _timer;
+        QPushButton _toggleButton;
+        QCheckBox _analyze;
+        MatView _view;
+        QTimer _timer;
         CameraUI _cam;
+        AlgorithmSelector _algoSelect;
 };

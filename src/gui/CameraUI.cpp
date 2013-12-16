@@ -50,7 +50,7 @@ std::vector<cv::Mat> CameraUI::captureVideo(int frames) {
     return _cam->captureVideo(frames);
 }
 
-Mat vp::analyzeFrame(Mat& inp) {
+Mat vp::analyzeFrame(const Mat& inp) {
     static CornerDetector cd;
     Mat out;
     Frame f(inp);
