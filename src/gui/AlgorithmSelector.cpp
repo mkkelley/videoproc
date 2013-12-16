@@ -10,6 +10,7 @@ using cv::Mat;
 const map<string, AlgorithmSelector::transform_fn> AlgorithmSelector::_algorithms {
     {"Keypoints", &vp::analyzeFrame},
     {"Circles", &vp::drawCircles},
+    {"Ellipses", &vp::drawEllipses},
 };
 
 AlgorithmSelector::AlgorithmSelector(QWidget* parent)
