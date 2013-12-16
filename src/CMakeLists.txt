@@ -4,6 +4,7 @@ SET( SOURCES
     Recorder.cpp
     Video.cpp
     VideoStitcher.cpp
+    CircleDetector.cpp
     CornerDetector.cpp
     FlagParser.cpp
     Frame.cpp

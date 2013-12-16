@@ -47,4 +47,5 @@ class CameraUI : public View {
 
 namespace vp {
     cv::Mat analyzeFrame(cv::Mat&);
+    cv::Mat drawCircles(const cv::Mat&);
 };
