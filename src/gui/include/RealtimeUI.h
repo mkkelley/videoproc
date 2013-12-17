@@ -16,10 +16,9 @@ class RealtimeUI : public QWidget {
     private slots:
         void handleToggleButton();
         void updateDisplay();
-        void handleAnalyzeToggle();
+        void handleAlgoChange();
     private:
         QPushButton _toggleButton;
-        QCheckBox _analyze;
         MatView _view;
         QTimer _timer;
         CameraUI _cam;

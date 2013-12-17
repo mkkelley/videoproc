@@ -8,7 +8,6 @@ using cv::Mat;
 RealtimeUI::RealtimeUI(QWidget *parent)
     : QWidget(parent),
     _toggleButton("Stop", this),
-    _analyze("Analyze", this),
     _view(this),
     _timer(this),
     _cam(),
@@ -20,7 +19,6 @@ RealtimeUI::RealtimeUI(QWidget *parent)
     auto buttons = new QHBoxLayout();
     buttons->addWidget(&_toggleButton);
     buttons->addWidget(&_algoSelect);
-    buttons->addWidget(&_analyze);
 
     layout->addLayout(buttons);
     setLayout(layout);
@@ -31,7 +29,7 @@ RealtimeUI::RealtimeUI(QWidget *parent)
 
     connect(&_toggleButton, SIGNAL(released()), this, SLOT(handleToggleButton()));
     connect(&_timer, SIGNAL(timeout()), this, SLOT(updateDisplay()));
-    connect(&_analyze, SIGNAL(stateChanged(int)), this, SLOT(handleAnalyzeToggle()));
+    connect(&_algoSelect, SIGNAL(currentIndexChanged(int)), this, SLOT(handleAlgoChange()));
 }
 
 void RealtimeUI::updateDisplay() {
@@ -52,9 +50,7 @@ void RealtimeUI::handleToggleButton() {
     }
 }
 
-void RealtimeUI::handleAnalyzeToggle() {
+void RealtimeUI::handleAlgoChange() {
     _cam.clearFilters();
-    if (_analyze.isChecked()) {
-        _cam.addFilter(_algoSelect.getFunction());
-    }
+    _cam.addFilter(_algoSelect.getFunction());
 }

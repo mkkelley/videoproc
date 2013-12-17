@@ -7,7 +7,10 @@ using std::string;
 using std::vector;
 using cv::Mat;
 
+static inline cv::Mat nothing(const cv::Mat& m) { return m; }
+
 const map<string, AlgorithmSelector::transform_fn> AlgorithmSelector::_algorithms {
+    {"None", &nothing},
     {"Keypoints", &vp::analyzeFrame},
     {"Circles", &vp::drawCircles},
     {"Ellipses", &vp::drawEllipses},
