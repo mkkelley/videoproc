@@ -24,7 +24,7 @@ Mat vp::drawCircles(const Mat& inp) {
         cv::Point center(circle[0], circle[1]);
         int radius = circle[2];
         cv::circle(out, center, 3, cv::Scalar(0, 255, 0), -1, 8, 0);
-        cv::circle(out, center, radius, cv::Scalar(0, 0, 255), 3, 8, 0);
+        cv::circle(out, center, radius, cv::Scalar(0, 0, 255), 2, 8, 0);
     }
     return out;
 }
