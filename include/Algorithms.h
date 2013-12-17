@@ -7,4 +7,6 @@ namespace vp {
     cv::Mat drawCircles(const cv::Mat&);
     cv::Mat drawEllipses(const cv::Mat&);
     cv::Mat drawContours(const cv::Mat&);
+    cv::Mat drawMotion(const cv::Mat&);
+    cv::Mat drawGhost(const cv::Mat&);
 };

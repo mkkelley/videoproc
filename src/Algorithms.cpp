@@ -54,3 +54,35 @@ Mat vp::drawContours(const Mat& inp) {
     cv::drawContours(out, contours, -1, cv::Scalar(0, 255, 0));
     return out;
 }
+
+const double alpha = .05;
+
+Mat vp::drawMotion(const Mat& inp) {
+    Mat temp = drawGhost(inp);
+    Mat difference;
+    cv::absdiff(inp, temp, difference);
+
+    Mat grayImage;
+    cv::cvtColor(difference, grayImage, CV_BGR2GRAY);
+    cv::threshold(grayImage, grayImage, 70, 255, CV_THRESH_BINARY);
+
+    cv::dilate(grayImage, grayImage, Mat(), cv::Point(-1, -1), 5);
+    cv::erode(grayImage, grayImage, Mat(), cv::Point(-1, -1), 5);
+
+    Mat out;
+    cv::cvtColor(grayImage, out, CV_GRAY2BGR);
+    out = vp::drawEllipses(out);
+    return out;
+}
+
+Mat vp::drawGhost(const Mat& inp) {
+    static Mat movingAverage;
+    if (movingAverage.empty()) {
+        inp.convertTo(movingAverage, CV_32FC3);
+    }
+    cv::accumulateWeighted(inp, movingAverage, alpha);
+
+    Mat temp;
+    movingAverage.convertTo(temp, CV_8U);
+    return temp;
+}
