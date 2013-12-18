@@ -20,5 +20,6 @@ bool Recorder::record(const std::string file, int frames) {
 }
 
 unique_ptr<View> Recorder::close() {
+    //safe because _cam internal pointer is set to null - no garbage pointer
     return std::move(_cam);
 }
