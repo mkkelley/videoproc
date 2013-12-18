@@ -5,10 +5,22 @@
 #include "ThreadPool.h"
 #include "View.h"
 
+/**
+ * AsyncRecorder takes input from a view and records it to a file
+ * asynchronously without any more effort from the user of the class. If
+ * AsyncRecorder::close is called, the objct is thereafter in an invalid
+ * state, with undefined behavior (you'll probably get a segfault). It launches
+ * one thread on the specified ThreadPool when start is called.
+ */
 class AsyncRecorder {
     public:
         AsyncRecorder(std::shared_ptr<ThreadPool>, std::unique_ptr<View>);
 
+        /**
+         * Launch a thread and start getting frames from the specified view,
+         * recording them to a file.
+         * @param filename The path of the file to which to record. Overwrites.
+         */
         bool start(std::string filename);
         void stop();
         void waitStop();
