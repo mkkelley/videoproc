@@ -1,5 +1,5 @@
 include ( ${QT_USE_FILE} )
-include_directories ( ../../include include )
+include_directories ( ../../include include ../parallel )
 add_definitions ( ${QT_DEFINITIONS} )
 
 set ( GUI_SOURCES
@@ -24,6 +24,7 @@ add_executable ( gui
     )
 target_link_libraries( gui
     videoproc
+    parallel
     ${OpenCV_LIBS}
     ${QT_LIBRARIES}
     )

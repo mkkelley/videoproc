@@ -6,27 +6,21 @@
 #include <QTimer>
 #include <QWidget>
 #include "CameraUI.h"
-#include "VideoStitcher.h"
+#include "AsyncRecorder.h"
 
 class RecorderUI : public QWidget {
     Q_OBJECT;
     public:
         RecorderUI(QWidget* parent = nullptr);
-        ~RecorderUI() = default;
+        ~RecorderUI();
     private slots:
         void handleToggleButton();
-        void recordNextFrame();
     private:
-        void startRecording();
-        void stopRecording();
-        bool isRecording() const;
-        void asyncStop();
-
         QPushButton _toggleButton;
         QLineEdit _fileNameEditor;
-        QTimer _timer;
         QCheckBox _analyze;
 
-        VideoStitcher* _stitcher;
         CameraUI _cam;
+        std::shared_ptr<ThreadPool> _pool;
+        AsyncRecorder _recorder;
 };

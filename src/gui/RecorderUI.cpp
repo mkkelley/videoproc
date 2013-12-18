@@ -10,10 +10,10 @@ RecorderUI::RecorderUI(QWidget *parent)
     : QWidget(parent),
     _toggleButton("Record", this),
     _fileNameEditor(this),
-    _timer(this),
     _analyze("Analyze", this),
-    _stitcher(nullptr),
-    _cam()
+    _cam(),
+    _pool(new ThreadPool(1)),
+    _recorder(_pool, std::unique_ptr<View>(&_cam))
 {
     _fileNameEditor.setPlaceholderText("output.avi");
 
@@ -27,45 +27,23 @@ RecorderUI::RecorderUI(QWidget *parent)
 
     connect(&_toggleButton, SIGNAL(released()),
             this, SLOT(handleToggleButton()));
-    connect(&_timer, SIGNAL(timeout()),
-            this, SLOT(recordNextFrame()));
 }
 
-void RecorderUI::startRecording() {
-    QString fileName = _fileNameEditor.text();
-    _cam.startCamera();
-    _stitcher = new VideoStitcher(fileName.toStdString(), _cam.getFps());
-    _timer.start(1);
-}
-
-void RecorderUI::stopRecording() {
-    _timer.stop();
-    delete _stitcher;
-    _cam.stopCamera();
-}
-
-bool RecorderUI::isRecording() const {
-    return _timer.isActive();
-}
-
-void RecorderUI::asyncStop() {
-    while (!isRecording() && _cam.isCapturing()) {
-        usleep(500);
-    }
-    stopRecording();
-    _toggleButton.setText("Record");
-    _toggleButton.setDown(false);
+RecorderUI::~RecorderUI() {
+    _recorder.close();
 }
 
 void RecorderUI::handleToggleButton() {
-    if (isRecording()) {
-        stopRecording();
+    if (_recorder.isRecording()) {
+        _recorder.waitStop();
+        _cam.stopCamera();
         _toggleButton.setText("Record");
         return; //EXIT
     } else if (_cam.isCapturing()) {
         _toggleButton.setText("Please Wait");
         _toggleButton.setDown(true);
-        QtConcurrent::run(std::bind(&RecorderUI::asyncStop, this));
+        _recorder.waitStop();
+        _cam.stopCamera();
         return;
     }
 
@@ -73,18 +51,8 @@ void RecorderUI::handleToggleButton() {
         _fileNameEditor.setText(_fileNameEditor.placeholderText());
     }
     QString fileName = _fileNameEditor.text();
-    QtConcurrent::run(std::bind(&RecorderUI::startRecording, this));
+    _cam.startCamera();
+    _recorder.start(fileName.toStdString());
 
     _toggleButton.setText("Stop");
-}
-
-void RecorderUI::recordNextFrame() {
-    if (_stitcher == nullptr) {
-        return;
-    }
-    _stitcher->appendImage(
-            _analyze.isChecked() ?
-                _cam.getNextFrame() :
-                _cam.getNextRawFrame()
-    );
 }
