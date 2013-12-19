@@ -17,6 +17,7 @@ const map<string, AlgorithmSelector::transform_fn> AlgorithmSelector::_algorithm
     {"Contours", &vp::drawContours},
     {"Motion", &vp::drawMotion},
     {"Ghost", &vp::drawGhost},
+    {"C & M", &vp::drawContoursAndMotion},
 };
 
 AlgorithmSelector::AlgorithmSelector(QWidget* parent)

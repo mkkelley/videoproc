@@ -9,4 +9,5 @@ namespace vp {
     cv::Mat drawContours(const cv::Mat&);
     cv::Mat drawMotion(const cv::Mat&);
     cv::Mat drawGhost(const cv::Mat&);
+    cv::Mat drawContoursAndMotion(const cv::Mat&);
 };

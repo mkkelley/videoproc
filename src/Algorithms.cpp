@@ -86,3 +86,47 @@ Mat vp::drawGhost(const Mat& inp) {
     movingAverage.convertTo(temp, CV_8U);
     return temp;
 }
+
+Mat vp::drawContoursAndMotion(const Mat& inp) {
+    //get the contours
+    Mat blurred;
+    inp.copyTo(blurred);
+    cv::GaussianBlur(inp, blurred, cv::Size(9, 9), 2, 2);
+
+    Mat cannyEdges;
+    cv::Canny(blurred, cannyEdges, 80, 60);
+
+    vector<vector<cv::Point>> contours;
+    cv::findContours(cannyEdges, contours, cv::noArray(), CV_RETR_TREE, CV_CHAIN_APPROX_NONE);
+
+    Mat contourImage = Mat::zeros(inp.size(), inp.type());
+    cv::drawContours(contourImage, contours, -1, cv::Scalar(0, 255, 0));
+
+    //Get the motion blobs
+    Mat temp = drawGhost(inp);
+    Mat difference;
+    cv::absdiff(inp, temp, difference);
+
+    Mat grayImage;
+    cv::cvtColor(difference, grayImage, CV_BGR2GRAY);
+    cv::threshold(grayImage, grayImage, 70, 255, CV_THRESH_BINARY);
+
+    cv::dilate(grayImage, grayImage, Mat(), cv::Point(-1, -1), 5);
+    cv::erode(grayImage, grayImage, Mat(), cv::Point(-1, -1), 5);
+
+    Mat motion;
+    cv::cvtColor(grayImage, motion, CV_GRAY2BGR);
+
+    //get the contours of the motion blobs
+    cv::Canny(motion, cannyEdges, 80, 60);
+
+    cv::findContours(cannyEdges, contours, cv::noArray(), CV_RETR_TREE, CV_CHAIN_APPROX_NONE);
+
+    Mat motionContours = Mat::zeros(inp.size(), inp.type());
+    cv::drawContours(motion, contours, -1, cv::Scalar(0, 0, 255));
+
+
+    Mat out(motion.size(), motion.type());
+    cv::absdiff(contourImage, motion, out);
+    return out;
+}
