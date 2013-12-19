@@ -11,7 +11,7 @@ ThreadPool::ThreadPool(size_t threads)
     _threads_running(0),
     _terminate_all_workers(false)
 {
-    for (int i = 0; i < _num_threads; i++) {
+    for (unsigned int i = 0; i < _num_threads; i++) {
         ++_threads_running;
         worker_type::create_and_attach(shared_ptr<ThreadPool>(this));
     }
