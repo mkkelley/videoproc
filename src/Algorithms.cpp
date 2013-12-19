@@ -55,7 +55,7 @@ Mat vp::drawContours(const Mat& inp) {
     return out;
 }
 
-const double alpha = .05;
+const double alpha = .10;
 
 Mat vp::drawMotion(const Mat& inp) {
     Mat temp = drawGhost(inp);
