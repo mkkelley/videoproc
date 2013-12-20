@@ -12,7 +12,7 @@ class WorkerThread : public std::enable_shared_from_this<WorkerThread<Pool>> {
          * Construct a WorkerThread with a pointer to the pool on which it
          * will work.
          */
-        WorkerThread(const std::shared_ptr<Pool>& pool) :
+        WorkerThread(Pool* pool) :
             _pool(pool),
             _thread(nullptr)
         {
@@ -42,7 +42,7 @@ class WorkerThread : public std::enable_shared_from_this<WorkerThread<Pool>> {
          * Construct a WorkerThread with a pointerr to a thread pool, and start
          * execution of tasks from the pool.
          */
-        static void create_and_attach(const std::shared_ptr<Pool>& p) {
+        static void create_and_attach(Pool* p) {
             std::shared_ptr<WorkerThread> worker(new WorkerThread(p));
             worker->_thread = std::make_shared<std::thread>(
                 std::thread(std::bind(&WorkerThread::run, worker))
@@ -50,6 +50,6 @@ class WorkerThread : public std::enable_shared_from_this<WorkerThread<Pool>> {
         }
 
     private:
-        std::shared_ptr<Pool> _pool;
+        Pool* _pool;
         std::shared_ptr<std::thread> _thread;
 };

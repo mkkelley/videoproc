@@ -21,7 +21,6 @@ void test_func_g() {
 
 int main() {
     std::shared_ptr<ThreadPool> tp(new ThreadPool(4));
-    tp->start();
     std::function<void()> f(test_func_c);
 
     tp->submit(test_func_g);

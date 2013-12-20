@@ -12,13 +12,10 @@ ThreadPool::ThreadPool(size_t threads)
     _num_workers(0),
     _terminate_all_workers(false)
 {
-}
-
-void ThreadPool::start() {
     for (unsigned int i = 0; i < _num_threads; i++) {
         ++_threads_running;
         ++_num_workers;
-        worker_type::create_and_attach(shared_from_this());
+        worker_type::create_and_attach(this);
     }
 }
 

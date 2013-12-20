@@ -14,7 +14,7 @@
  * Best use-case is longer running functions, shorter ones might be better
  * executed sequentially.
  */
-class ThreadPool : public std::enable_shared_from_this<ThreadPool> {
+class ThreadPool {
     typedef WorkerThread<ThreadPool> worker_type;
     public:
         /**
@@ -23,8 +23,6 @@ class ThreadPool : public std::enable_shared_from_this<ThreadPool> {
          */
         ThreadPool(size_t threads = 1);
 
-
-        void start();
 
         /**
          * Submit a function to be run asynchronously at a later time.
