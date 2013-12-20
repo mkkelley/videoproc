@@ -12,8 +12,23 @@ class View {
         virtual std::vector<cv::Mat> captureVideo(int frames) = 0;
         virtual ~View() = default;
 
+        /**
+         * Take the output of getNextRawFrame() and apply all filters to it,
+         * returning the resulting image.
+         */
         cv::Mat getNextFrame();
-        void addFilter(std::function<cv::Mat(cv::Mat&)>);
+
+        /**
+         * Add a filter to the output of getNextRawFrame(). Note that this is
+         * not an exclusionary filter, but a video filter, modifying the input
+         * and producing output. Applied in order of addition.  @param fn The
+         * filter function.
+         */
+        void addFilter(std::function<cv::Mat(cv::Mat&)> fn);
+
+        /**
+         * Remove all previously-added filters.
+         */
         void clearFilters();
     private:
         std::vector<std::function<cv::Mat(cv::Mat&)>> _filters;
