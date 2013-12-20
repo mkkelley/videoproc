@@ -30,7 +30,5 @@ int main() {
         std::unique_lock<std::mutex> l(_cout_lock);
         std::cout << "test" << std::endl;
     }
-    tp->wait(0);
-    tp->terminate_all_workers();
     return 0;
 }

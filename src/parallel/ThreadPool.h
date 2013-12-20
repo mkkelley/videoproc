@@ -23,6 +23,7 @@ class ThreadPool {
          */
         ThreadPool(size_t threads = 1);
 
+        ~ThreadPool();
 
         /**
          * Submit a function to be run asynchronously at a later time.

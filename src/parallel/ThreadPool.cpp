@@ -19,6 +19,11 @@ ThreadPool::ThreadPool(size_t threads)
     }
 }
 
+ThreadPool::~ThreadPool() {
+    wait(0);
+    terminate_all_workers();
+}
+
 bool ThreadPool::execute_next_task() {
     function<void()> fn;
 
