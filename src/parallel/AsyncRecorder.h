@@ -22,9 +22,26 @@ class AsyncRecorder {
          * @param filename The path of the file to which to record. Overwrites.
          */
         bool start(std::string filename);
+
+        /**
+         * Stop recording after the current View::getNextFrame() is finished.
+         */
         void stop();
+
+        /**
+         * AsyncRecorder::stop() and block until View::getNextFrame() is
+         * finished.
+         */
         void waitStop();
+
+        /**
+         * @return Whether or not the AsyncRecorder is recording at the moment.
+         */
         bool isRecording() const;
+
+        /**
+         * Close the recorder, invalidating any further calls to start().
+         */
         std::unique_ptr<View> close();
     private:
         void record(std::string filename);
