@@ -23,12 +23,13 @@ class ThreadPool {
          */
         ThreadPool(size_t threads = 1);
 
+        /**
+         * Waits for 0 running threads and terminates all workers.
+         */
         ~ThreadPool();
 
         /**
          * Submit a function to be run asynchronously at a later time.
-         * ThreadPool::wait(0) must be called to ensure that all submitted
-         * function are actully run.
          * @param f The function to run. Must be void(). Lambdas, result of
          * std::bind, and real functions are all fine. Must not throw an
          * exception.
@@ -80,6 +81,7 @@ class ThreadPool {
         unsigned const int _num_threads;
         /** Number of threads currently running or waiting. */
         std::atomic<unsigned int> _threads_running;
+        /** Number of workers attached to the ThreadPool (any state) */
         std::atomic<unsigned int> _num_workers;
 
         mutable std::mutex _queue_lock;
