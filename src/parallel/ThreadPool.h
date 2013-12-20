@@ -14,7 +14,7 @@
  * Best use-case is longer running functions, shorter ones might be better
  * executed sequentially.
  */
-class ThreadPool {
+class ThreadPool : public std::enable_shared_from_this<ThreadPool> {
     typedef WorkerThread<ThreadPool> worker_type;
     public:
         /**
@@ -22,6 +22,9 @@ class ThreadPool {
          * @param threads The number of worker threads to construct.
          */
         ThreadPool(size_t threads = 1);
+
+
+        void start();
 
         /**
          * Submit a function to be run asynchronously at a later time.
@@ -78,6 +81,7 @@ class ThreadPool {
         unsigned const int _num_threads;
         /** Number of threads currently running or waiting. */
         std::atomic<unsigned int> _threads_running;
+        std::atomic<unsigned int> _num_workers;
 
         mutable std::mutex _queue_lock;
         std::queue<std::function<void()>> _queue;

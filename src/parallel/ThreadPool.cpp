@@ -9,11 +9,16 @@ using std::mutex;
 ThreadPool::ThreadPool(size_t threads)
     : _num_threads(threads),
     _threads_running(0),
+    _num_workers(0),
     _terminate_all_workers(false)
 {
+}
+
+void ThreadPool::start() {
     for (unsigned int i = 0; i < _num_threads; i++) {
         ++_threads_running;
-        worker_type::create_and_attach(shared_ptr<ThreadPool>(this));
+        ++_num_workers;
+        worker_type::create_and_attach(shared_from_this());
     }
 }
 
@@ -62,7 +67,7 @@ void ThreadPool::terminate_all_workers() {
     _terminate_all_workers = true;
     _task_or_terminated_event.notify_all();
 
-    while (_threads_running > 0) {
+    while (_num_workers > 0) {
         _idle_or_terminated_event.wait(lock);
     }
 
@@ -76,6 +81,7 @@ void ThreadPool::terminate_all_workers() {
 void ThreadPool::destruct_worker(shared_ptr<worker_type> worker) {
     unique_lock<mutex> lock(_queue_lock);
     --_threads_running;
+    --_num_workers;
     _idle_or_terminated_event.notify_all();
     _terminated_workers.push_back(worker);
 }
