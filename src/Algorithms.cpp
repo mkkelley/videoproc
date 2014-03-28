@@ -130,3 +130,61 @@ Mat vp::drawContoursAndMotion(const Mat& inp) {
     cv::absdiff(contourImage, motion, out);
     return out;
 }
+
+#include <iostream>
+using std::cout;
+
+Mat vp::matchContoursAndMotion(const Mat& inp) {
+    //get the contours
+    Mat blurred;
+    inp.copyTo(blurred);
+    cv::GaussianBlur(inp, blurred, cv::Size(9, 9), 2, 2);
+
+    Mat cannyEdges;
+    cv::Canny(blurred, cannyEdges, 80, 60);
+
+    vector<vector<cv::Point>> contours;
+    cv::findContours(cannyEdges, contours, cv::noArray(), CV_RETR_TREE, CV_CHAIN_APPROX_NONE);
+
+    //Get the motion blobs
+    Mat temp = drawGhost(inp);
+    Mat difference;
+    cv::absdiff(inp, temp, difference);
+
+    Mat grayImage;
+    cv::cvtColor(difference, grayImage, CV_BGR2GRAY);
+    cv::threshold(grayImage, grayImage, 70, 255, CV_THRESH_BINARY);
+
+    cv::dilate(grayImage, grayImage, Mat(), cv::Point(-1, -1), 5);
+    cv::erode(grayImage, grayImage, Mat(), cv::Point(-1, -1), 5);
+
+    Mat motion;
+    cv::cvtColor(grayImage, motion, CV_GRAY2BGR);
+
+    //get the contours of the motion blobs
+    cv::Canny(motion, cannyEdges, 80, 60);
+
+    vector<vector<cv::Point>> motionContours;
+    cv::findContours(cannyEdges, motionContours, cv::noArray(), CV_RETR_TREE, CV_CHAIN_APPROX_NONE);
+
+    static double maxRet = 0;
+    vector<vector<cv::Point>> displayMotionC;
+    vector<vector<cv::Point>> displayC;
+    for (vector<cv::Point> contour : contours) {
+        for (vector<cv::Point> motionC : motionContours) {
+            double ret = cv::matchShapes(contour, motionC, CV_CONTOURS_MATCH_I1, 0);
+            if (ret > maxRet) {
+                maxRet = ret;
+            }
+                if (ret < 100) {
+                    displayMotionC.push_back(motionC);
+                    displayC.push_back(contour);
+                }
+            //cout << ret << std::endl;
+            //cout << "MR: " << maxRet << std::endl;
+        }
+    }
+    cv::drawContours(blurred, displayC, -1, cv::Scalar(0, 0, 255));
+    cv::drawContours(blurred, displayMotionC, -1, cv::Scalar(0, 255, 0));
+    return blurred;
+}

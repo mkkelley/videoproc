@@ -18,17 +18,17 @@ MainWindow::MainWindow(QWidget* parent)
 void MainWindow::resetMainWindow() {
     _mainMenu = new QWidget(this);
     _realtimeButton = new QPushButton("Realtime", _mainMenu);
-    _recordButton = new QPushButton("Record", _mainMenu);
+    //_recordButton = new QPushButton("Record", _mainMenu);
     auto* layout = new QVBoxLayout();
     layout->addWidget(_realtimeButton);
-    layout->addWidget(_recordButton);
+    //layout->addWidget(_recordButton);
     _mainMenu->setLayout(layout);
     setCentralWidget(_mainMenu);
     adjustSize();
     connect(_realtimeButton, SIGNAL(released()),
             this, SLOT(handleRealtimeButton()));
-    connect(_recordButton, SIGNAL(released()),
-            this, SLOT(handleRecordButton()));
+    //connect(_recordButton, SIGNAL(released()),
+            //this, SLOT(handleRecordButton()));
 }
 
 void MainWindow::setInterface(QWidget* interface) {
