@@ -179,6 +179,10 @@ int main(int argc, char **argv) {
             key = cv::waitKey();
             if (key >= 65536) key -= 65536;
         } while (key != 27);
+    } else if (flags.getArg(1) == "pic") {
+        std::unique_ptr<Camera> c(new Camera(0));
+        Mat image = c->getNextFrame();
+        cv::imwrite(flags.getArg(2), image);
     } else {
         showHelp();
         return 1;
