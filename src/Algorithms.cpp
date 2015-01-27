@@ -131,9 +131,6 @@ Mat vp::drawContoursAndMotion(const Mat& inp) {
     return out;
 }
 
-#include <iostream>
-using std::cout;
-
 Mat vp::matchContoursAndMotion(const Mat& inp) {
     //get the contours
     Mat blurred;
@@ -176,12 +173,10 @@ Mat vp::matchContoursAndMotion(const Mat& inp) {
             if (ret > maxRet) {
                 maxRet = ret;
             }
-                if (ret < 100) {
-                    displayMotionC.push_back(motionC);
-                    displayC.push_back(contour);
-                }
-            //cout << ret << std::endl;
-            //cout << "MR: " << maxRet << std::endl;
+            if (ret < 100) {
+                displayMotionC.push_back(motionC);
+                displayC.push_back(contour);
+            }
         }
     }
     cv::drawContours(blurred, displayC, -1, cv::Scalar(0, 0, 255));
